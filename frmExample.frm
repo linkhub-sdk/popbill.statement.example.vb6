@@ -462,7 +462,7 @@ Begin VB.Form frmExample
       Height          =   315
       Left            =   4560
       TabIndex        =   3
-      Text            =   "userid"
+      Text            =   "testkorea"
       Top             =   165
       Width           =   1935
    End
@@ -470,7 +470,7 @@ Begin VB.Form frmExample
       Height          =   315
       Left            =   1335
       TabIndex        =   1
-      Text            =   "1231212312"
+      Text            =   "1234567890"
       Top             =   180
       Width           =   1935
    End
@@ -503,7 +503,7 @@ Option Explicit
 '연동아이디
 Private Const LinkID = "TESTER"
 '비밀키. 유출에 주의하시기 바랍니다.
-Private Const SecretKey = "Nr5yZIf+SoQIP9LHdBoLx33h2TtUjB5gtC5bPgJtzGM="
+Private Const SecretKey = "SwWxqU+0TErBXy/9TVjIPEnI0VTUMMSQZtJf3Ed8q3I="
 
 Private statementService As New PBDocService
 

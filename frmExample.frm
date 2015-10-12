@@ -158,7 +158,7 @@ Begin VB.Form frmExample
       Begin VB.Frame Frame13 
          Caption         =   " 기타 URL "
          Height          =   1290
-         Left            =   7800
+         Left            =   8040
          TabIndex        =   40
          Top             =   4200
          Width           =   1935
@@ -182,7 +182,7 @@ Begin VB.Form frmExample
       Begin VB.Frame Frame14 
          Caption         =   " 문서 정보 "
          Height          =   2565
-         Left            =   4440
+         Left            =   4560
          TabIndex        =   34
          Top             =   4200
          Width           =   3210
@@ -420,12 +420,12 @@ Begin VB.Form frmExample
       End
       Begin VB.Label Label3 
          AutoSize        =   -1  'True
-         Caption         =   "문서관리번호( MgtKey) : "
+         Caption         =   "관리번호( MgtKey) : "
          Height          =   180
-         Left            =   555
+         Left            =   915
          TabIndex        =   9
          Top             =   1455
-         Width           =   2115
+         Width           =   1755
       End
    End
    Begin VB.Frame Frame1 
@@ -1081,6 +1081,7 @@ Private Sub btnGetInfos_Click()
     Dim resultList As Collection
     Dim KeyList As New Collection
     
+    '관리번호 배열, 최대 1000건
     KeyList.Add "123123"
     KeyList.Add "123123"
     KeyList.Add "123"
@@ -1270,8 +1271,8 @@ Private Sub btnJoinMember_Click()
     Dim joinData As New PBJoinForm
     Dim Response As PBResponse
     
-    joinData.LinkID = LinkID '연동 아이디
-    joinData.CorpNum = "1231212312" '사업자번호 "-" 제외.
+    joinData.LinkID = LinkID '링크 아이디
+    joinData.CorpNum = "1231212312" '사업자번호, "-" 제외.
     joinData.ceoname = "대표자성명"
     joinData.corpName = "회원상호"
     joinData.addr = "주소"
@@ -1362,7 +1363,7 @@ End Sub
 Private Sub btnRegister_Click()
     Dim Statement As New PBStatement
     
-    Statement.writeDate = "20140801"             '필수, 기재상 작성일자
+    Statement.writeDate = "20151012"             '필수, 기재상 작성일자
     Statement.purposeType = "영수"               '필수, {영수, 청구}
     Statement.taxType = "과세"                   '필수, {과세, 영세, 면세}
     Statement.formCode = txtFormCode.Text
@@ -1451,7 +1452,7 @@ Private Sub btnRegister_Click()
         Exit Sub
     End If
     
-    MsgBox (Response.message)
+    MsgBox ("[" + CStr(Response.code) + "] " + Response.message)
     
 
 End Sub
@@ -1460,7 +1461,7 @@ Private Sub btnRegistIssue_Click()
     Dim Statement As New PBStatement
     
     Statement.memo = "즉시발행 메모"
-    Statement.writeDate = "20151007"             '필수, 기재상 작성일자
+    Statement.writeDate = "20151012"             '필수, 기재상 작성일자
     Statement.purposeType = "영수"               '필수, {영수, 청구}
     Statement.taxType = "과세"                   '필수, {과세, 영세, 면세}
     Statement.formCode = txtFormCode.Text
@@ -1550,7 +1551,7 @@ Private Sub btnRegistIssue_Click()
         Exit Sub
     End If
     
-    MsgBox (Response.message)
+    MsgBox ("[" + CStr(Response.code) + "] " + Response.message)
 End Sub
 
 Private Sub btnSendEmail_Click()

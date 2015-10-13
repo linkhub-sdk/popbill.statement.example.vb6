@@ -799,9 +799,9 @@ Private Sub btnFAXSEnd_Click()
 
     Dim Statement As New PBStatement
     
-    Statement.receiveNum = "0264429700"          '팩스전송 발신번호
-    Statement.sendNum = "07075103710"            '팩스전송 수신번호
-    
+    Statement.sendNum = "07075103710"            '팩스전송 발신번호
+    Statement.receiveNum = "070111222"          '팩스전송 수신번호
+       
     Statement.writeDate = "20151007"             '필수, 기재상 작성일자
     Statement.purposeType = "영수"               '필수, {영수, 청구}
     Statement.taxType = "과세"                   '필수, {과세, 영세, 면세}

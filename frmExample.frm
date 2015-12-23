@@ -2,17 +2,25 @@ VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmExample 
    Caption         =   "팝빌 전자명세서 SDK 예제"
-   ClientHeight    =   10545
+   ClientHeight    =   10665
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   11925
+   ClientWidth     =   11820
    LinkTopic       =   "Form1"
-   ScaleHeight     =   10545
-   ScaleWidth      =   11925
-   StartUpPosition =   3  'Windows 기본값
+   ScaleHeight     =   10665
+   ScaleWidth      =   11820
+   StartUpPosition =   2  '화면 가운데
+   Begin VB.CommandButton btnDetachStatement 
+      Caption         =   "전자명세서 첨부해제"
+      Height          =   375
+      Left            =   3000
+      TabIndex        =   68
+      Top             =   9840
+      Width           =   2115
+   End
    Begin VB.Frame Frame7 
       Caption         =   " 전자명세서 관련 기능 "
-      Height          =   7140
+      Height          =   7380
       Left            =   240
       TabIndex        =   7
       Top             =   3120
@@ -77,11 +85,19 @@ Begin VB.Form frmExample
       End
       Begin VB.Frame Frame11 
          Caption         =   " 문서 정보 "
-         Height          =   2175
+         Height          =   2535
          Left            =   240
          TabIndex        =   47
          Top             =   4200
          Width           =   2010
+         Begin VB.CommandButton btnSearch 
+            Caption         =   "문서 목록조회"
+            Height          =   375
+            Left            =   210
+            TabIndex        =   66
+            Top             =   2040
+            Width           =   1575
+         End
          Begin VB.CommandButton btnGetInfo 
             Caption         =   "문서 정보"
             Height          =   390
@@ -101,7 +117,7 @@ Begin VB.Form frmExample
          Begin VB.CommandButton btnGetLogs 
             Caption         =   "문서 이력"
             Height          =   390
-            Left            =   195
+            Left            =   210
             TabIndex        =   49
             Top             =   1140
             Width           =   1590
@@ -109,7 +125,7 @@ Begin VB.Form frmExample
          Begin VB.CommandButton btnGetDetailInfo 
             Caption         =   "문서 상세 정보"
             Height          =   390
-            Left            =   195
+            Left            =   210
             TabIndex        =   48
             Top             =   1590
             Width           =   1590
@@ -117,18 +133,26 @@ Begin VB.Form frmExample
       End
       Begin VB.Frame Frame12 
          Caption         =   " 부가 서비스"
-         Height          =   2175
+         Height          =   3015
          Left            =   2520
          TabIndex        =   43
          Top             =   4200
-         Width           =   1740
+         Width           =   2580
+         Begin VB.CommandButton btnAttachStatement 
+            Caption         =   "전자명세서 첨부"
+            Height          =   375
+            Left            =   240
+            TabIndex        =   67
+            Top             =   2070
+            Width           =   2115
+         End
          Begin VB.CommandButton btnFAXSEnd 
             Caption         =   "선팩스 전송"
             Height          =   375
             Left            =   240
             TabIndex        =   65
             Top             =   1640
-            Width           =   1275
+            Width           =   2115
          End
          Begin VB.CommandButton btnSendFAX 
             Caption         =   "팩스 전송"
@@ -136,7 +160,7 @@ Begin VB.Form frmExample
             Left            =   225
             TabIndex        =   46
             Top             =   1200
-            Width           =   1275
+            Width           =   2115
          End
          Begin VB.CommandButton btnSendSMS 
             Caption         =   "문자 전송"
@@ -144,7 +168,7 @@ Begin VB.Form frmExample
             Left            =   225
             TabIndex        =   45
             Top             =   735
-            Width           =   1275
+            Width           =   2115
          End
          Begin VB.CommandButton btnSendEmail 
             Caption         =   "이메일 전송"
@@ -152,13 +176,13 @@ Begin VB.Form frmExample
             Left            =   225
             TabIndex        =   44
             Top             =   300
-            Width           =   1275
+            Width           =   2115
          End
       End
       Begin VB.Frame Frame13 
          Caption         =   " 기타 URL "
          Height          =   1290
-         Left            =   8040
+         Left            =   8880
          TabIndex        =   40
          Top             =   4200
          Width           =   1935
@@ -182,7 +206,7 @@ Begin VB.Form frmExample
       Begin VB.Frame Frame14 
          Caption         =   " 문서 정보 "
          Height          =   2565
-         Left            =   4560
+         Left            =   5400
          TabIndex        =   34
          Top             =   4200
          Width           =   3210
@@ -677,9 +701,23 @@ Private Sub btnAttachFile_Click()
     MsgBox ("[" + CStr(Response.code) + "] " + Response.message)
     
 End Sub
-
-
-
+Private Sub btnAttachStatement_Click()
+    Dim Response As PBResponse
+    Dim SubItemCode As Integer
+    Dim SubMgtKey As String
+    
+    SubItemCode = 121           '첨부할 전자명세서 종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표,126-영수증
+    SubMgtKey = "20151223-01"   '첨부할 전자명세서 관리번호
+      
+    Set Response = statementService.AttachStatement(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, SubItemCode, SubMgtKey)
+    
+    If Response Is Nothing Then
+        MsgBox ("[" + CStr(statementService.LastErrCode) + "] " + statementService.LastErrMessage)
+        Exit Sub
+    End If
+    
+    MsgBox ("[" + CStr(Response.code) + "] " + Response.message)
+End Sub
 
 Private Sub btnCancel_Click()
     Dim Response As PBResponse
@@ -694,10 +732,6 @@ Private Sub btnCancel_Click()
     MsgBox ("[" + CStr(Response.code) + "] " + Response.message)
 End Sub
 
-
-Private Sub btnCertificateExpireDate_Click()
-
-End Sub
 
 Private Sub btnCancelISsue_2_Click()
     Dim Response As PBResponse
@@ -795,12 +829,30 @@ Private Sub btnDeleteFile_Click()
 End Sub
 
 
+Private Sub btnDetachStatement_Click()
+    Dim Response As PBResponse
+    Dim SubItemCode As Integer
+    Dim SubMgtKey As String
+    
+    SubItemCode = 121           '첨부할 전자명세서 종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표,126-영수증
+    SubMgtKey = "20151223-01"   '첨부해제할 전자명세서 관리번호
+      
+    Set Response = statementService.DetachStatement(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, SubItemCode, SubMgtKey)
+    
+    If Response Is Nothing Then
+        MsgBox ("[" + CStr(statementService.LastErrCode) + "] " + statementService.LastErrMessage)
+        Exit Sub
+    End If
+    
+    MsgBox ("[" + CStr(Response.code) + "] " + Response.message)
+End Sub
+
 Private Sub btnFAXSEnd_Click()
 
     Dim Statement As New PBStatement
     
     Statement.sendNum = "07075103710"            '팩스전송 발신번호
-    Statement.receiveNum = "070111222"          '팩스전송 수신번호
+    Statement.receiveNum = "070111222"           '팩스전송 수신번호
        
     Statement.writeDate = "20151007"             '필수, 기재상 작성일자
     Statement.purposeType = "영수"               '필수, {영수, 청구}
@@ -1552,6 +1604,76 @@ Private Sub btnRegistIssue_Click()
     End If
     
     MsgBox ("[" + CStr(Response.code) + "] " + Response.message)
+End Sub
+
+Private Sub btnSearch_Click()
+    Dim docSearchList As PBDocSearchList
+    Dim DType As String
+    Dim SDate As String
+    Dim EDate As String
+    Dim State As New Collection
+    Dim itemCode As New Collection
+    Dim Page As Integer
+    Dim PerPage As Integer
+    
+    
+    DType = "I"             '[필수] 일자유형, R-등록일시 W-작성일자 I-발행일시 중 택1
+    SDate = "20151206"      '[필수] 시작일자, yyyyMMdd
+    EDate = "20151222"      '[필수] 종료일자, yyyyMMdd
+    
+    State.Add "100"         '전송상태값 배열, 미기재시 전체상태조회, 문서상태값 3자리숫자 작성
+    State.Add "2**"         '2,3번째 와일드카드 가능
+    State.Add "3**"
+    
+    itemCode.Add "121"      '문서종류코드 배열, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표,126-영수증
+    itemCode.Add "122"
+    itemCode.Add "123"
+    itemCode.Add "124"
+    itemCode.Add "125"
+    itemCode.Add "126"
+    
+       
+    Page = 1                '페이지 번호
+    PerPage = 15            '페이지 목록개수, 최대 1000건
+    
+    Set docSearchList = statementService.Search(txtCorpNum.Text, DType, SDate, EDate, State, itemCode, Page, PerPage)
+     
+    If docSearchList Is Nothing Then
+        MsgBox ("[" + CStr(statementService.LastErrCode) + "] " + statementService.LastErrMessage)
+        Exit Sub
+    End If
+    
+    Dim tmp As String
+    tmp = "code : " + CStr(docSearchList.code) + vbCrLf
+    tmp = tmp + "total : " + CStr(docSearchList.total) + vbCrLf
+    tmp = tmp + "perPage : " + CStr(docSearchList.PerPage) + vbCrLf
+    tmp = tmp + "pageNum : " + CStr(docSearchList.pageNum) + vbCrLf
+    tmp = tmp + "perCount : " + CStr(docSearchList.pageCount) + vbCrLf
+    tmp = tmp + "message : " + docSearchList.message + vbCrLf + vbCrLf
+    
+    
+    tmp = tmp + "ItemCode | ItemKey | StateCode | TaxType | WriteDate | SenderCorpName | SenderCorpNum | ReceiverCorpName | ReceiverCorpNum " + _
+            " | SupplyCostTotal | TaxTotal | RegDT" + vbCrLf
+            
+    Dim info As PBDocInfo
+    
+    For Each info In docSearchList.list
+        tmp = tmp + CStr(info.itemCode) + " | "
+        tmp = tmp + info.itemKey + " | "
+        tmp = tmp + CStr(info.stateCode) + " | "
+        tmp = tmp + info.taxType + " | "
+        tmp = tmp + info.writeDate + " | "
+        tmp = tmp + info.senderCorpName
+        tmp = tmp + info.senderCorpNum + " | "
+        tmp = tmp + info.receiverCorpName + " | "
+        tmp = tmp + info.receiverCorpNum + " | "
+        tmp = tmp + info.supplyCostTotal + " | "
+        tmp = tmp + info.taxTotal + " | "
+        tmp = tmp + info.regDT + vbCrLf
+    Next
+    
+    MsgBox tmp
+       
 End Sub
 
 Private Sub btnSendEmail_Click()

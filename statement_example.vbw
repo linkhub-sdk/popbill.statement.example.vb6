@@ -1,4 +1,4 @@
-frmExample = 66, 87, 1370, 738, , 44, 58, 1357, 1000, C
+frmExample = 66, 87, 1370, 738, Z, 44, 58, 1357, 1000, C
 cStringBuilder = 0, 0, 0, 0, C
 Linkhub = 154, 203, 1347, 916, 
 LinkhubToken = 0, 0, 0, 0, C
@@ -12,3 +12,4 @@ PBDocService = 86, 133, 1279, 847,
 PBStatement = 176, 232, 1369, 945, 
 PBContactInfo = 154, 203, 1396, 912, C
 PBCorpInfo = 176, 232, 1418, 941, C
+PBDocSearchList = 129, 136, 1376, 738, 

@@ -1107,8 +1107,11 @@ Private Sub btnGetInfo_Click()
     
     tmp = tmp + "senderCorpName : " + docInfo.senderCorpName + vbCrLf
     tmp = tmp + "senderCorpNum : " + docInfo.senderCorpNum + vbCrLf
+    tmp = tmp + "senderPrintYN : " + CStr(docInfo.senderPrintYN) + vbCrLf
+    
     tmp = tmp + "receiverCorpName : " + docInfo.receiverCorpName + vbCrLf
     tmp = tmp + "receiverCorpNum : " + docInfo.receiverCorpNum + vbCrLf
+    tmp = tmp + "receiverPrintYN : " + CStr(docInfo.receiverPrintYN) + vbCrLf
     
     tmp = tmp + "supplyCostTotal : " + docInfo.supplyCostTotal + vbCrLf
     tmp = tmp + "taxTotal : " + docInfo.taxTotal + vbCrLf
@@ -1134,7 +1137,7 @@ Private Sub btnGetInfos_Click()
     Dim KeyList As New Collection
     
     '관리번호 배열, 최대 1000건
-    KeyList.Add "123123"
+    KeyList.Add "20160112-01"
     KeyList.Add "123123"
     KeyList.Add "123"
     KeyList.Add "123123123"
@@ -1148,12 +1151,13 @@ Private Sub btnGetInfos_Click()
     
     Dim tmp As String
     
-    tmp = "ItemKey | StateCode | TaxType | WriteDate | RegDT" + vbCrLf
+    tmp = "ItemKey | StateCode | TaxType | WriteDate | RegDT | SenderPrintYN | ReceiverPrintYN " + vbCrLf
     
     Dim info As PBDocInfo
     
     For Each info In resultList
-        tmp = tmp + info.itemKey + " | " + CStr(info.stateCode) + " | " + info.taxType + " | " + info.writeDate + " | " + info.regDT + vbCrLf
+        tmp = tmp + info.itemKey + " | " + CStr(info.stateCode) + " | " + info.taxType + " | "
+        tmp = tmp + info.writeDate + " | " + info.regDT + " | " + CStr(info.senderPrintYN) + " | " + CStr(info.receiverPrintYN) + vbCrLf
     Next
     
     MsgBox tmp
@@ -1619,7 +1623,7 @@ Private Sub btnSearch_Click()
     
     DType = "I"             '[필수] 일자유형, R-등록일시 W-작성일자 I-발행일시 중 택1
     SDate = "20151001"      '[필수] 시작일자, yyyyMMdd
-    EDate = "20151231"      '[필수] 종료일자, yyyyMMdd
+    EDate = "20160112"      '[필수] 종료일자, yyyyMMdd
     
     State.Add "100"         '전송상태값 배열, 미기재시 전체상태조회, 문서상태값 3자리숫자 작성
     State.Add "2**"         '2,3번째 와일드카드 가능
@@ -1652,7 +1656,7 @@ Private Sub btnSearch_Click()
     tmp = tmp + "message : " + docSearchList.message + vbCrLf + vbCrLf
     
     
-    tmp = tmp + "ItemCode | ItemKey | StateCode | TaxType | WriteDate | SenderCorpName | SenderCorpNum | ReceiverCorpName | ReceiverCorpNum " + _
+    tmp = tmp + "ItemCode | ItemKey | StateCode | TaxType | WriteDate | SenderCorpName | SenderCorpNum | SenderPrintYN | ReceiverCorpName | ReceiverCorpNum | ReceiverPrintYN " + _
             " | SupplyCostTotal | TaxTotal | RegDT" + vbCrLf
             
     Dim info As PBDocInfo
@@ -1663,10 +1667,14 @@ Private Sub btnSearch_Click()
         tmp = tmp + CStr(info.stateCode) + " | "
         tmp = tmp + info.taxType + " | "
         tmp = tmp + info.writeDate + " | "
-        tmp = tmp + info.senderCorpName
+        tmp = tmp + info.senderCorpName + " | "
         tmp = tmp + info.senderCorpNum + " | "
+        tmp = tmp + CStr(info.senderPrintYN) + " | "
+        
         tmp = tmp + info.receiverCorpName + " | "
         tmp = tmp + info.receiverCorpNum + " | "
+        tmp = tmp + CStr(info.receiverPrintYN) + " | "
+        
         tmp = tmp + info.supplyCostTotal + " | "
         tmp = tmp + info.taxTotal + " | "
         tmp = tmp + info.regDT + vbCrLf

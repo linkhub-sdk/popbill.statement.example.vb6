@@ -2,13 +2,13 @@ VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmExample 
    Caption         =   "팝빌 전자명세서 SDK 예제"
-   ClientHeight    =   10665
+   ClientHeight    =   10860
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   11820
+   ClientWidth     =   11910
    LinkTopic       =   "Form1"
-   ScaleHeight     =   10665
-   ScaleWidth      =   11820
+   ScaleHeight     =   10860
+   ScaleWidth      =   11910
    StartUpPosition =   2  '화면 가운데
    Begin VB.CommandButton btnDetachStatement 
       Caption         =   "전자명세서 첨부해제"
@@ -23,7 +23,7 @@ Begin VB.Form frmExample
       Height          =   7380
       Left            =   240
       TabIndex        =   7
-      Top             =   3120
+      Top             =   3240
       Width           =   11475
       Begin VB.Frame Frame9 
          Caption         =   "즉시발행 프로세스"
@@ -454,7 +454,7 @@ Begin VB.Form frmExample
    End
    Begin VB.Frame Frame1 
       Caption         =   " 팝빌 기본 API "
-      Height          =   2370
+      Height          =   2610
       Left            =   240
       TabIndex        =   4
       Top             =   600
@@ -464,7 +464,7 @@ Begin VB.Form frmExample
          Height          =   1815
          Left            =   9240
          TabIndex        =   58
-         Top             =   360
+         Top             =   240
          Width           =   2055
          Begin VB.CommandButton btnUpdateCorpInfo 
             Caption         =   "회사정보 수정"
@@ -488,7 +488,7 @@ Begin VB.Form frmExample
          Height          =   1770
          Left            =   6840
          TabIndex        =   27
-         Top             =   360
+         Top             =   240
          Width           =   2175
          Begin VB.CommandButton btnPopbillURL_CHRG 
             Caption         =   "포인트 충전 URL"
@@ -512,7 +512,7 @@ Begin VB.Form frmExample
          Height          =   1770
          Left            =   4680
          TabIndex        =   26
-         Top             =   360
+         Top             =   240
          Width           =   1935
          Begin VB.CommandButton btnUpdateContact 
             Caption         =   "담당자 정보 수정"
@@ -541,11 +541,19 @@ Begin VB.Form frmExample
       End
       Begin VB.Frame Frame3 
          Caption         =   " 포인트 관련 "
-         Height          =   1770
+         Height          =   2250
          Left            =   1920
          TabIndex        =   23
-         Top             =   360
+         Top             =   240
          Width           =   2625
+         Begin VB.CommandButton btnGetChargeInfo 
+            Caption         =   "과금정보 확인"
+            Height          =   375
+            Left            =   120
+            TabIndex        =   69
+            Top             =   1680
+            Width           =   2295
+         End
          Begin VB.CommandButton btnGetPartnerBalance 
             Caption         =   "파트너 잔여포인트 확인"
             Height          =   375
@@ -576,7 +584,7 @@ Begin VB.Form frmExample
          Height          =   1770
          Left            =   120
          TabIndex        =   5
-         Top             =   360
+         Top             =   240
          Width           =   1635
          Begin VB.CommandButton btnCheckID 
             Caption         =   "ID 중복 확인"
@@ -960,6 +968,25 @@ Private Sub btnGetBalance_Click()
     MsgBox "잔여포인트 : " + CStr(balance)
     
     
+End Sub
+
+Private Sub btnGetChargeInfo_Click()
+    Dim ChargeInfo As PBChargeInfo
+    
+    Set ChargeInfo = statementService.GetChargeInfo(txtCorpNum.Text, selectedItemCode)
+     
+    If ChargeInfo Is Nothing Then
+        MsgBox ("[" + CStr(statementService.LastErrCode) + "] " + statementService.LastErrMessage)
+        Exit Sub
+    End If
+    
+    Dim tmp As String
+    
+    tmp = tmp + "unitCost (요금) : " + ChargeInfo.unitCost + vbCrLf
+    tmp = tmp + "chargeMethod (과금유형) : " + ChargeInfo.chargeMethod + vbCrLf
+    tmp = tmp + "rateSystem (과금제도) : " + ChargeInfo.rateSystem + vbCrLf
+    
+    MsgBox tmp
 End Sub
 
 Private Sub btnGetCorpInfo_Click()

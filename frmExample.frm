@@ -15,7 +15,7 @@ Begin VB.Form frmExample
       Height          =   375
       Left            =   3000
       TabIndex        =   68
-      Top             =   9840
+      Top             =   9960
       Width           =   2115
    End
    Begin VB.Frame Frame7 

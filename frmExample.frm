@@ -5,10 +5,10 @@ Begin VB.Form frmExample
    ClientHeight    =   10860
    ClientLeft      =   60
    ClientTop       =   450
-   ClientWidth     =   11910
+   ClientWidth     =   12540
    LinkTopic       =   "Form1"
    ScaleHeight     =   10860
-   ScaleWidth      =   11910
+   ScaleWidth      =   12540
    StartUpPosition =   2  '화면 가운데
    Begin VB.CommandButton btnDetachStatement 
       Caption         =   "전자명세서 첨부해제"
@@ -458,11 +458,11 @@ Begin VB.Form frmExample
       Left            =   240
       TabIndex        =   4
       Top             =   600
-      Width           =   11475
+      Width           =   12075
       Begin VB.Frame Frame6 
          Caption         =   " 회사정보 관련 "
          Height          =   1815
-         Left            =   9240
+         Left            =   9840
          TabIndex        =   58
          Top             =   240
          Width           =   2055
@@ -489,14 +489,22 @@ Begin VB.Form frmExample
          Left            =   6840
          TabIndex        =   27
          Top             =   240
-         Width           =   2175
+         Width           =   2655
+         Begin VB.CommandButton btnGetPopbillURL_SEAL 
+            Caption         =   "인감 및 첨부문서 등록 URL"
+            Height          =   375
+            Left            =   120
+            TabIndex        =   70
+            Top             =   1200
+            Width           =   2415
+         End
          Begin VB.CommandButton btnPopbillURL_CHRG 
             Caption         =   "포인트 충전 URL"
             Height          =   375
             Left            =   120
             TabIndex        =   57
             Top             =   720
-            Width           =   1935
+            Width           =   2415
          End
          Begin VB.CommandButton btnGetPopbillURL 
             Caption         =   "팝빌 로그인 URL"
@@ -504,7 +512,7 @@ Begin VB.Form frmExample
             Left            =   120
             TabIndex        =   28
             Top             =   240
-            Width           =   1935
+            Width           =   2415
          End
       End
       Begin VB.Frame Frame4 
@@ -1269,6 +1277,19 @@ Private Sub btnGetPopbillURL_Click()
         Exit Sub
     End If
     MsgBox "URL : " + vbCrLf + url
+End Sub
+
+Private Sub btnGetPopbillURL_SEAL_Click()
+    Dim url As String
+    
+    url = statementService.GetPopbillURL(txtCorpNum.Text, txtUserID.Text, "SEAL")
+    
+    If url = "" Then
+         MsgBox ("[" + CStr(statementService.LastErrCode) + "] " + statementService.LastErrMessage)
+        Exit Sub
+    End If
+    MsgBox "URL : " + vbCrLf + url
+    
 End Sub
 
 Private Sub btnGetPopUpURL_Click()

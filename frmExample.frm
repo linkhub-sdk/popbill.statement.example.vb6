@@ -1668,10 +1668,11 @@ Private Sub btnSearch_Click()
     Dim Page As Integer
     Dim PerPage As Integer
     Dim Order As String
+    Dim QString As String
     
-    DType = "I"             '[필수] 일자유형, R-등록일시 W-작성일자 I-발행일시 중 택1
-    SDate = "20151001"      '[필수] 시작일자, yyyyMMdd
-    EDate = "20160112"      '[필수] 종료일자, yyyyMMdd
+    DType = "W"             '[필수] 일자유형, R-등록일시 W-작성일자 I-발행일시 중 택1
+    SDate = "20160701"      '[필수] 시작일자, yyyyMMdd
+    EDate = "20160831"      '[필수] 종료일자, yyyyMMdd
     
     State.Add "100"         '전송상태값 배열, 미기재시 전체상태조회, 문서상태값 3자리숫자 작성
     State.Add "2**"         '2,3번째 와일드카드 가능
@@ -1687,8 +1688,9 @@ Private Sub btnSearch_Click()
     Page = 1                '페이지 번호
     PerPage = 15            '페이지 목록개수, 최대 1000건
     Order = "D"             '정렬방향, D-내림차순(기본값), A-오름차순
-    
-    Set docSearchList = statementService.Search(txtCorpNum.Text, DType, SDate, EDate, State, itemCode, Page, PerPage, Order)
+    QString = ""        '거래처 정보, 거래처 상호 또는 거래처 사업자등록번호 기재, 미기재시 전체조회
+        
+    Set docSearchList = statementService.Search(txtCorpNum.Text, DType, SDate, EDate, State, itemCode, Page, PerPage, Order, QString)
      
     If docSearchList Is Nothing Then
         MsgBox ("[" + CStr(statementService.LastErrCode) + "] " + statementService.LastErrMessage)

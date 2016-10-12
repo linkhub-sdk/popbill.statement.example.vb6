@@ -703,17 +703,6 @@ Private Function selectedItemCode() As Integer
     If cboItemCode.Text = "영수증" Then selectedItemCode = 126
     
 End Function
-Private Sub btn_GetURL_PBOX_Click()
-    Dim url As String
-    
-    url = statementService.GetURL(txtCorpNum.Text, txtUserID.Text, "PBOX")
-    
-    If url = "" Then
-         MsgBox ("[" + CStr(statementService.LastErrCode) + "] " + statementService.LastErrMessage)
-        Exit Sub
-    End If
-    MsgBox "URL : " + vbCrLf + url
-End Sub
 
 '=========================================================================
 ' 전자명세서에 첨부파일을 등록합니다.
@@ -723,16 +712,14 @@ End Sub
 
 Private Sub btnAttachFile_Click()
     Dim FilePath As String
-    CommonDialog1.FileName = ""
+    Dim Response As PBResponse
     
+    CommonDialog1.FileName = ""
     CommonDialog1.ShowOpen
     
     FilePath = CommonDialog1.FileName
     
     If FilePath = "" Then Exit Sub
-    
-    Dim Response As PBResponse
-  
     
     Set Response = statementService.AttachFile(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, FilePath, txtUserID.Text)
     
@@ -855,7 +842,6 @@ End Sub
 
 Private Sub btnCheckMgtKeyInUse_Click()
     Dim Response As PBResponse
-   
     
     Set Response = statementService.CheckMgtKeyInUse(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
@@ -958,8 +944,10 @@ End Sub
 '=========================================================================
 
 Private Sub btnFAXSEnd_Click()
-
     Dim Statement As New PBStatement
+    Dim ReceiptNum As String
+    Dim newDetail As PBDocDetail
+    Dim i
     
     '팩스 발신번호
     Statement.sendNum = "07043042991"
@@ -1052,6 +1040,7 @@ Private Sub btnFAXSEnd_Click()
     '공급받는자 메일주소
     Statement.receiverEmail = "test@receiver.com"
     
+    
     '=========================================================================
     '                     전자명세서 기재사항
     '=========================================================================
@@ -1085,8 +1074,7 @@ Private Sub btnFAXSEnd_Click()
     
     '상세항목 추가.
     Set Statement.detailList = New Collection
-    Dim i
-    Dim newDetail As PBDocDetail
+    
     For i = 1 To 20
     
         Set newDetail = New PBDocDetail
@@ -1111,6 +1099,7 @@ Private Sub btnFAXSEnd_Click()
         
     Next
     
+    
     '=========================================================================
     '전자명세서 추가속성
     ' - 추가속성에 관한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >
@@ -1122,8 +1111,6 @@ Private Sub btnFAXSEnd_Click()
     Statement.propertyBag.Add "CBalance", "100000"
     Statement.propertyBag.Add "Deposit", "10000"
     Statement.propertyBag.Add "Balance", "100000"
-    
-    Dim ReceiptNum As String
     
     ReceiptNum = statementService.FAXSend(txtCorpNum.Text, Statement, txtUserID.Text)
     
@@ -1184,6 +1171,7 @@ End Sub
 
 Private Sub btnGetCorpInfo_Click()
     Dim CorpInfo As PBCorpInfo
+    Dim tmp As String
     
     Set CorpInfo = statementService.GetCorpInfo(txtCorpNum.Text, txtUserID.Text)
      
@@ -1191,8 +1179,6 @@ Private Sub btnGetCorpInfo_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
-    
-    Dim tmp As String
     
     tmp = tmp + "ceoname (대표자성명) : " + CorpInfo.ceoname + vbCrLf
     tmp = tmp + "corpName (상호) : " + CorpInfo.corpName + vbCrLf
@@ -1211,6 +1197,9 @@ End Sub
 
 Private Sub btnGetDetailInfo_Click()
     Dim docDetailInfo As PBStatement
+    Dim tmp As String
+    Dim key
+    Dim detail As PBDocDetail
     
     Set docDetailInfo = statementService.GetDetailInfo(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
      
@@ -1218,8 +1207,6 @@ Private Sub btnGetDetailInfo_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
-    
-    Dim tmp As String
     
     tmp = tmp + "writeDate : " + docDetailInfo.writeDate + vbCrLf
     tmp = tmp + "taxType : " + docDetailInfo.taxType + vbCrLf
@@ -1251,15 +1238,12 @@ Private Sub btnGetDetailInfo_Click()
     '''  상세내역 생략 '''
     tmp = tmp + "Properties" + vbCrLf
     
-    Dim key
     
     For Each key In docDetailInfo.propertyBag.keys
         tmp = tmp + vbTab + key + " : " + docDetailInfo.propertyBag.Item(key) + vbCrLf
     Next
     
     tmp = tmp + "detailList" + vbCrLf
-    
-    Dim detail As PBDocDetail
      
     For Each detail In docDetailInfo.detailList
         tmp = tmp + vbTab + CStr(detail.serialNum) + " : " + detail.itemName + " | " + detail.supplyCost + vbCrLf
@@ -1283,6 +1267,7 @@ Private Sub btnGetEPrintURL_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
+    
     MsgBox "URL : " + vbCrLf + url
 End Sub
 
@@ -1294,6 +1279,8 @@ End Sub
 
 Private Sub btnGetFiles_Click()
     Dim resultList As Collection
+    Dim tmp As String
+    Dim file As PBAttachFile
     
     Set resultList = statementService.GetFiles(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
      
@@ -1302,11 +1289,7 @@ Private Sub btnGetFiles_Click()
         Exit Sub
     End If
     
-    Dim tmp As String
-    
     tmp = "serialNum | attachedfile | displayName |  RegDT" + vbCrLf
-    
-    Dim file As PBAttachFile
     
     For Each file In resultList
         tmp = tmp + CStr(file.serialNum) + " | " + file.AttachedFile + " | " + file.DisplayName + " | " + file.regDT + vbCrLf
@@ -1324,6 +1307,7 @@ End Sub
 
 Private Sub btnGetInfo_Click()
     Dim docInfo As PBDocInfo
+    Dim tmp As String
     
     Set docInfo = statementService.GetInfo(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
      
@@ -1331,8 +1315,6 @@ Private Sub btnGetInfo_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
-    
-    Dim tmp As String
     
     tmp = tmp + "itemKey : " + docInfo.itemKey + vbCrLf
     tmp = tmp + "stateCode : " + CStr(docInfo.stateCode) + vbCrLf
@@ -1367,6 +1349,8 @@ End Sub
 Private Sub btnGetInfos_Click()
     Dim resultList As Collection
     Dim KeyList As New Collection
+    Dim tmp As String
+    Dim info As PBDocInfo
     
     '전자명세서 관리번호 배열, 최대 1000건
     KeyList.Add "20161011-01"
@@ -1381,11 +1365,7 @@ Private Sub btnGetInfos_Click()
         Exit Sub
     End If
     
-    Dim tmp As String
-    
     tmp = "ItemKey | StateCode | TaxType | WriteDate | RegDT | SenderPrintYN | ReceiverPrintYN " + vbCrLf
-    
-    Dim info As PBDocInfo
     
     For Each info In resultList
         tmp = tmp + info.itemKey + " | " + CStr(info.stateCode) + " | " + info.taxType + " | "
@@ -1404,6 +1384,8 @@ End Sub
 
 Private Sub btnGetLogs_Click()
     Dim resultList As Collection
+    Dim tmp As String
+    Dim log As PBDocLog
     
     Set resultList = statementService.GetLogs(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
      
@@ -1412,11 +1394,7 @@ Private Sub btnGetLogs_Click()
         Exit Sub
     End If
     
-    Dim tmp As String
-    
     tmp = "DocLogType | Log | ProcType |  ProcMemo | RegDT | IP" + vbCrLf
-    
-    Dim log As PBDocLog
     
     For Each log In resultList
         tmp = tmp + CStr(log.docLogType) + " | " + log.log + " | " + log.procType + " | " + log.procMemo + " | " + log.regDT + " | " + log.ip + vbCrLf
@@ -1439,6 +1417,7 @@ Private Sub btnGetMailURL_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
+    
     MsgBox "URL : " + vbCrLf + url
 End Sub
 
@@ -1502,6 +1481,7 @@ Private Sub btnGetPopbillURL_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
+    
     MsgBox "URL : " + vbCrLf + url
 End Sub
 
@@ -1516,9 +1496,10 @@ Private Sub btnGetPopbillURL_SEAL_Click()
     url = statementService.GetPopbillURL(txtCorpNum.Text, txtUserID.Text, "SEAL")
     
     If url = "" Then
-        MsgBox ("[" + CStr(statementService.LastErrCode) + "] " + statementService.LastErrMessage)
+        MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
+    
     MsgBox "URL : " + vbCrLf + url
     
 End Sub
@@ -1537,8 +1518,8 @@ Private Sub btnGetPopUpURL_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
-    MsgBox "URL : " + vbCrLf + url
     
+    MsgBox "URL : " + vbCrLf + url
 End Sub
 
 '=========================================================================
@@ -1555,6 +1536,7 @@ Private Sub btnGetPrintURL_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
+    
     MsgBox "URL : " + vbCrLf + url
 End Sub
 
@@ -1572,6 +1554,7 @@ Private Sub btnGetURL_SBOX_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
+    
     MsgBox "URL : " + vbCrLf + url
 End Sub
 
@@ -1589,18 +1572,7 @@ Private Sub btnGetURL_TBOX_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
-    MsgBox "URL : " + vbCrLf + url
-End Sub
-
-Private Sub btnGetURL_WRITE_Click()
-    Dim url As String
     
-    url = statementService.GetURL(txtCorpNum.Text, txtUserID.Text, "WRITE")
-    
-    If url = "" Then
-         MsgBox ("[" + CStr(statementService.LastErrCode) + "] " + statementService.LastErrMessage)
-        Exit Sub
-    End If
     MsgBox "URL : " + vbCrLf + url
 End Sub
 
@@ -1613,6 +1585,7 @@ Private Sub btnIssue_Click()
     Dim Response As PBResponse
     Dim memo As String
     
+    '메모
     memo = "전자명세서 발행 메모"
     
     Set Response = statementService.Issue(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, memo, txtUserID.Text)
@@ -1623,7 +1596,6 @@ Private Sub btnIssue_Click()
     End If
     
     MsgBox ("응답코드 : " + CStr(Response.code) + vbCrLf + "응답메시지 : " + Response.message)
-    
 End Sub
 
 '=========================================================================
@@ -1693,7 +1665,9 @@ End Sub
 
 Private Sub btnListContact_Click()
     Dim resultList As Collection
-        
+    Dim tmp As String
+    Dim info As PBContactInfo
+    
     Set resultList = statementService.ListContact(txtCorpNum.Text, txtUserID.Text)
      
     If resultList Is Nothing Then
@@ -1701,11 +1675,7 @@ Private Sub btnListContact_Click()
         Exit Sub
     End If
     
-    Dim tmp As String
-    
     tmp = "id | email | hp | personName | searchAllAllowYN | tel | fax | mgrYN | regDT " + vbCrLf
-    
-    Dim info As PBContactInfo
     
     For Each info In resultList
         tmp = tmp + info.id + " | " + info.email + " | " + info.hp + " | " + info.personName + " | " + CStr(info.searchAllAllowYN) _
@@ -1729,6 +1699,7 @@ Private Sub btnPopbillURL_CHRG_Click()
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
+    
     MsgBox "URL : " + vbCrLf + url
 End Sub
 
@@ -1779,6 +1750,9 @@ End Sub
 
 Private Sub btnRegister_Click()
     Dim Statement As New PBStatement
+    Dim newDetail As PBDocDetail
+    Dim Response As PBResponse
+    Dim i
     
     '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
     Statement.writeDate = "20161011"
@@ -1895,11 +1869,9 @@ Private Sub btnRegister_Click()
     '발행시 알림문자 발송여부
     Statement.smssendYN = True
   
-    
     '상세항목 추가.
     Set Statement.detailList = New Collection
-    Dim i
-    Dim newDetail As PBDocDetail
+
     For i = 1 To 20
     
         Set newDetail = New PBDocDetail
@@ -1936,9 +1908,6 @@ Private Sub btnRegister_Click()
     Statement.propertyBag.Add "Deposit", "10000"
     Statement.propertyBag.Add "Balance", "100000"
     
-    
-    Dim Response As PBResponse
-    
     Set Response = statementService.Register(txtCorpNum.Text, Statement, txtUserID.Text)
     
     If Response Is Nothing Then
@@ -1948,7 +1917,6 @@ Private Sub btnRegister_Click()
     
     MsgBox ("응답코드 : " + CStr(Response.code) + vbCrLf + "응답메시지 : " + Response.message)
     
-
 End Sub
 
 '=========================================================================
@@ -1957,6 +1925,9 @@ End Sub
 
 Private Sub btnRegistIssue_Click()
     Dim Statement As New PBStatement
+    Dim newDetail As PBDocDetail
+    Dim Response As PBResponse
+    Dim i
     
     Statement.memo = "즉시발행 메모"
     
@@ -2074,12 +2045,10 @@ Private Sub btnRegistIssue_Click()
     
     '발행시 알림문자 발송여부
     Statement.smssendYN = True
-  
     
     '상세항목 추가.
     Set Statement.detailList = New Collection
-    Dim i
-    Dim newDetail As PBDocDetail
+    
     For i = 1 To 20
     
         Set newDetail = New PBDocDetail
@@ -2115,8 +2084,6 @@ Private Sub btnRegistIssue_Click()
     Statement.propertyBag.Add "CBalance", "100000"
     Statement.propertyBag.Add "Deposit", "10000"
     Statement.propertyBag.Add "Balance", "100000"
-        
-    Dim Response As PBResponse
     
     Set Response = statementService.RegistIssue(txtCorpNum.Text, Statement, txtUserID.Text)
     
@@ -2145,6 +2112,8 @@ Private Sub btnSearch_Click()
     Dim PerPage As Integer
     Dim Order As String
     Dim QString As String
+    Dim tmp As String
+    Dim info As PBDocInfo
     
     '[필수] 일자유형, R-등록일시 W-작성일자 I-발행일시 중 택1
     DType = "W"
@@ -2188,7 +2157,6 @@ Private Sub btnSearch_Click()
         Exit Sub
     End If
     
-    Dim tmp As String
     tmp = "code : " + CStr(docSearchList.code) + vbCrLf
     tmp = tmp + "total : " + CStr(docSearchList.total) + vbCrLf
     tmp = tmp + "perPage : " + CStr(docSearchList.PerPage) + vbCrLf
@@ -2199,8 +2167,6 @@ Private Sub btnSearch_Click()
     
     tmp = tmp + "ItemCode | ItemKey | StateCode | TaxType | WriteDate | SenderCorpName | SenderCorpNum | SenderPrintYN | ReceiverCorpName | ReceiverCorpNum | ReceiverPrintYN " + _
             " | SupplyCostTotal | TaxTotal | RegDT" + vbCrLf
-            
-    Dim info As PBDocInfo
     
     For Each info In docSearchList.list
         tmp = tmp + CStr(info.itemCode) + " | "
@@ -2262,7 +2228,7 @@ Private Sub btnSendFAX_Click()
     senderNum = "070-4304-2991"
     
     '수신팩스번호
-    reciverNum = "070-111-222"
+    receiverNum = "070-111-222"
     
     Set Response = statementService.SendFax(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, senderNum, receiverNum, txtUserID.Text)
     
@@ -2285,7 +2251,7 @@ Private Sub btnSendSMS_Click()
     Dim Response As PBResponse
     Dim senderNum As String
     Dim receiverNum As String
-    Dim contents As String
+    Dim Contents As String
     
     '발신번호
     senderNum = "070-4304-2991"
@@ -2294,9 +2260,9 @@ Private Sub btnSendSMS_Click()
     receiverNum = "010-111-222"
     
     '문자메시지 내용, 90Byte 초과된 내용은 삭제되어 전송됨
-    contents = "전자명세서를 발행하였습니다. 메일을 확인하여 주시기바랍니다"
+    Contents = "전자명세서를 발행하였습니다. 메일을 확인하여 주시기바랍니다"
     
-    Set Response = statementService.SendSMS(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, senderNum, receiverNum, contesnts, txtUserID.Text)
+    Set Response = statementService.SendSMS(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, senderNum, receiverNum, Contents, txtUserID.Text)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2330,6 +2296,9 @@ End Sub
 
 Private Sub btnUpdate_Click()
     Dim Statement As New PBStatement
+    Dim newDetail As PBDocDetail
+    Dim Response As PBResponse
+    Dim i
     
     '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
     Statement.writeDate = "20161011"
@@ -2450,8 +2419,7 @@ Private Sub btnUpdate_Click()
     
     '상세항목 추가.
     Set Statement.detailList = New Collection
-    Dim i
-    Dim newDetail As PBDocDetail
+    
     For i = 1 To 20
     
         Set newDetail = New PBDocDetail
@@ -2476,7 +2444,6 @@ Private Sub btnUpdate_Click()
         
     Next
     
-    
     '=========================================================================
     '전자명세서 추가속성
     ' - 추가속성에 관한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >
@@ -2488,9 +2455,6 @@ Private Sub btnUpdate_Click()
     Statement.propertyBag.Add "CBalance", "100000"
     Statement.propertyBag.Add "Deposit", "10000"
     Statement.propertyBag.Add "Balance", "100000"
-    
-    
-    Dim Response As PBResponse
     
     Set Response = statementService.Update(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, Statement, txtUserID.Text)
     

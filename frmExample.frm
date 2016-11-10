@@ -954,7 +954,7 @@ Private Sub btnFAXSEnd_Click()
     '팩스 수신번호
     Statement.receiveNum = "07043042999"
        
-    '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
+    '[필수] 기재상 작성일자, 날짜형식(yyyyMMdd)
     Statement.writeDate = "20161011"
     
     '[필수] {영수, 청구} 중 기재
@@ -986,7 +986,7 @@ Private Sub btnFAXSEnd_Click()
     '공급자 상호
     Statement.senderCorpName = "공급자 상호"
     
-    '공급자 상호명
+    '공급자 대표자 성명
     Statement.senderCEOName = "공급자 대표자 성명"
     
     '공급자 주소
@@ -1753,7 +1753,7 @@ Private Sub btnRegister_Click()
     Dim Response As PBResponse
     Dim i
     
-    '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
+    '[필수] 기재상 작성일자, 날짜형식(yyyyMMdd)
     Statement.writeDate = "20161011"
     
     '[필수] {영수, 청구} 중 기재
@@ -1785,7 +1785,7 @@ Private Sub btnRegister_Click()
     '공급자 상호
     Statement.senderCorpName = "공급자 상호"
     
-    '공급자 상호명
+    '공급자 대표자 성명
     Statement.senderCEOName = "공급자 대표자 성명"
     
     '공급자 주소
@@ -1930,7 +1930,7 @@ Private Sub btnRegistIssue_Click()
     
     Statement.memo = "즉시발행 메모"
     
-    '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
+    '[필수] 기재상 작성일자, 날짜형식(yyyyMMdd)
     Statement.writeDate = "20161011"
     
     '[필수] {영수, 청구} 중 기재
@@ -1962,7 +1962,7 @@ Private Sub btnRegistIssue_Click()
     '공급자 상호
     Statement.senderCorpName = "공급자 상호"
     
-    '공급자 상호명
+    '공급자 대표자 성명
     Statement.senderCEOName = "공급자 대표자 성명"
     
     '공급자 주소
@@ -2299,7 +2299,7 @@ Private Sub btnUpdate_Click()
     Dim Response As PBResponse
     Dim i
     
-    '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
+    '[필수] 기재상 작성일자, 날짜형식(yyyyMMdd)
     Statement.writeDate = "20161011"
     
     '[필수] {영수, 청구} 중 기재
@@ -2331,7 +2331,7 @@ Private Sub btnUpdate_Click()
     '공급자 상호
     Statement.senderCorpName = "공급자 상호_수정"
     
-    '공급자 상호명
+    '공급자 대표자 성명
     Statement.senderCEOName = "공급자 대표자 성명"
     
     '공급자 주소

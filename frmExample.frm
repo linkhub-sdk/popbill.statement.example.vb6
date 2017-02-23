@@ -665,9 +665,9 @@ Attribute VB_Exposed = False
 ' 팝빌 전자명세서 API VB 6.0 SDK Example
 '
 ' - VB6 SDK 연동환경 설정방법 안내 :
-' - 업데이트 일자 : 2016-10-11
-' - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991 (직통 / 정요한대리)
-' - 연동 기술지원 이메일 : dev@linkhub.co.kr
+' - 업데이트 일자 : 2017-02-23
+' - 연동 기술지원 연락처 : 1600-8536 / 070-4304-2991
+' - 연동 기술지원 이메일 : code@linkhub.co.kr
 '
 ' <테스트 연동개발 준비사항>
 ' 1) 25, 28번 라인에 선언된 링크아이디(LinkID)와 비밀키(SecretKey)를
@@ -721,7 +721,7 @@ Private Sub btnAttachFile_Click()
     
     If FilePath = "" Then Exit Sub
     
-    Set Response = statementService.AttachFile(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, FilePath, txtUserID.Text)
+    Set Response = statementService.AttachFile(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, FilePath)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -768,7 +768,7 @@ Private Sub btnCancel_Click()
     '메모
     memo = "전자명세서 발행취소 메모"
     
-    Set Response = statementService.Cancel(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, memo, txtUserID.Text)
+    Set Response = statementService.Cancel(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, memo)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -789,7 +789,7 @@ Private Sub btnCancelISsue_2_Click()
     '메모
     memo = "발행 취소 메모"
     
-    Set Response = statementService.Cancel(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, memo, txtUserID.Text)
+    Set Response = statementService.Cancel(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, memo)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -862,7 +862,7 @@ End Sub
 Private Sub btnDelete_2_Click()
     Dim Response As PBResponse
     
-    Set Response = statementService.Delete(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    Set Response = statementService.Delete(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -881,7 +881,7 @@ End Sub
 Private Sub btnDelete_Click()
     Dim Response As PBResponse
     
-    Set Response = statementService.Delete(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    Set Response = statementService.Delete(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -900,7 +900,7 @@ End Sub
 Private Sub btnDeleteFile_Click()
     Dim Response As PBResponse
    
-    Set Response = statementService.DeleteFile(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtFileID.Text, txtUserID.Text)
+    Set Response = statementService.DeleteFile(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtFileID.Text)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -952,10 +952,10 @@ Private Sub btnFAXSEnd_Click()
     Statement.sendNum = "07043042991"
     
     '팩스 수신번호
-    Statement.receiveNum = "07043042999"
+    Statement.receiveNum = "070000111"
        
     '[필수] 기재상 작성일자, 날짜형식(yyyyMMdd)
-    Statement.writeDate = "20161011"
+    Statement.writeDate = "20170223"
     
     '[필수] {영수, 청구} 중 기재
     Statement.purposeType = "영수"
@@ -1111,7 +1111,7 @@ Private Sub btnFAXSEnd_Click()
     Statement.propertyBag.Add "Deposit", "10000"
     Statement.propertyBag.Add "Balance", "100000"
     
-    ReceiptNum = statementService.FAXSend(txtCorpNum.Text, Statement, txtUserID.Text)
+    ReceiptNum = statementService.FAXSend(txtCorpNum.Text, Statement)
     
     If ReceiptNum = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1172,7 +1172,7 @@ Private Sub btnGetCorpInfo_Click()
     Dim CorpInfo As PBCorpInfo
     Dim tmp As String
     
-    Set CorpInfo = statementService.GetCorpInfo(txtCorpNum.Text, txtUserID.Text)
+    Set CorpInfo = statementService.GetCorpInfo(txtCorpNum.Text)
      
     If CorpInfo Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1200,7 +1200,7 @@ Private Sub btnGetDetailInfo_Click()
     Dim key
     Dim detail As PBDocDetail
     
-    Set docDetailInfo = statementService.GetDetailInfo(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    Set docDetailInfo = statementService.GetDetailInfo(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
      
     If docDetailInfo Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1260,7 +1260,7 @@ End Sub
 Private Sub btnGetEPrintURL_Click()
     Dim url As String
     
-    url = statementService.GetEPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    url = statementService.GetEPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
     If url = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1281,7 +1281,7 @@ Private Sub btnGetFiles_Click()
     Dim tmp As String
     Dim file As PBAttachFile
     
-    Set resultList = statementService.GetFiles(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    Set resultList = statementService.GetFiles(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
      
     If resultList Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1308,7 +1308,7 @@ Private Sub btnGetInfo_Click()
     Dim docInfo As PBDocInfo
     Dim tmp As String
     
-    Set docInfo = statementService.GetInfo(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    Set docInfo = statementService.GetInfo(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
      
     If docInfo Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1357,7 +1357,7 @@ Private Sub btnGetInfos_Click()
     KeyList.Add "20161011-03"
     KeyList.Add "20161011-04"
     
-    Set resultList = statementService.GetInfos(txtCorpNum.Text, selectedItemCode, KeyList, txtUserID.Text)
+    Set resultList = statementService.GetInfos(txtCorpNum.Text, selectedItemCode, KeyList)
      
     If resultList Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1386,7 +1386,7 @@ Private Sub btnGetLogs_Click()
     Dim tmp As String
     Dim log As PBDocLog
     
-    Set resultList = statementService.GetLogs(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    Set resultList = statementService.GetLogs(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
      
     If resultList Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1410,7 +1410,7 @@ End Sub
 Private Sub btnGetMailURL_Click()
     Dim url As String
     
-    url = statementService.GetMailURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    url = statementService.GetMailURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
     If url = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1435,7 +1435,7 @@ Private Sub btnGetMassPrintURL_Click()
     KeyList.Add "20161011-03"
     KeyList.Add "20161011-04"
     
-    url = statementService.GetMassPrintURL(txtCorpNum.Text, selectedItemCode, KeyList, txtUserID.Text)
+    url = statementService.GetMassPrintURL(txtCorpNum.Text, selectedItemCode, KeyList)
      
     If url = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1511,7 +1511,7 @@ End Sub
 Private Sub btnGetPopUpURL_Click()
     Dim url As String
     
-    url = statementService.GetPopUpURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    url = statementService.GetPopUpURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
     If url = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1529,7 +1529,7 @@ End Sub
 Private Sub btnGetPrintURL_Click()
     Dim url As String
   
-    url = statementService.GetPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
+    url = statementService.GetPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
     If url = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1587,7 +1587,7 @@ Private Sub btnIssue_Click()
     '메모
     memo = "전자명세서 발행 메모"
     
-    Set Response = statementService.Issue(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, memo, txtUserID.Text)
+    Set Response = statementService.Issue(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, memo)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1667,7 +1667,7 @@ Private Sub btnListContact_Click()
     Dim tmp As String
     Dim info As PBContactInfo
     
-    Set resultList = statementService.ListContact(txtCorpNum.Text, txtUserID.Text)
+    Set resultList = statementService.ListContact(txtCorpNum.Text)
      
     If resultList Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1737,7 +1737,7 @@ Private Sub btnRegistContact_Click()
     '관리자 권한여부
     joinData.mgrYN = False
         
-    Set Response = statementService.RegistContact(txtCorpNum.Text, joinData, txtUserID.Text)
+    Set Response = statementService.RegistContact(txtCorpNum.Text, joinData)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1754,7 +1754,7 @@ Private Sub btnRegister_Click()
     Dim i
     
     '[필수] 기재상 작성일자, 날짜형식(yyyyMMdd)
-    Statement.writeDate = "20161011"
+    Statement.writeDate = "20170223"
     
     '[필수] {영수, 청구} 중 기재
     Statement.purposeType = "영수"
@@ -1907,7 +1907,7 @@ Private Sub btnRegister_Click()
     Statement.propertyBag.Add "Deposit", "10000"
     Statement.propertyBag.Add "Balance", "100000"
     
-    Set Response = statementService.Register(txtCorpNum.Text, Statement, txtUserID.Text)
+    Set Response = statementService.Register(txtCorpNum.Text, Statement)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1931,7 +1931,7 @@ Private Sub btnRegistIssue_Click()
     Statement.memo = "즉시발행 메모"
     
     '[필수] 기재상 작성일자, 날짜형식(yyyyMMdd)
-    Statement.writeDate = "20161011"
+    Statement.writeDate = "20170223"
     
     '[필수] {영수, 청구} 중 기재
     Statement.purposeType = "영수"
@@ -2084,7 +2084,7 @@ Private Sub btnRegistIssue_Click()
     Statement.propertyBag.Add "Deposit", "10000"
     Statement.propertyBag.Add "Balance", "100000"
     
-    Set Response = statementService.RegistIssue(txtCorpNum.Text, Statement, txtUserID.Text)
+    Set Response = statementService.RegistIssue(txtCorpNum.Text, Statement)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2201,7 +2201,7 @@ Private Sub btnSendEmail_Click()
     '수신메일주소
     receiverEmail = "test@test.com"
   
-    Set Response = statementService.SendEmail(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, receiverEmail, txtUserID.Text)
+    Set Response = statementService.SendEmail(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, receiverEmail)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2229,7 +2229,7 @@ Private Sub btnSendFAX_Click()
     '수신팩스번호
     receiverNum = "070-111-222"
     
-    Set Response = statementService.SendFax(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, senderNum, receiverNum, txtUserID.Text)
+    Set Response = statementService.SendFax(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, senderNum, receiverNum)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2261,7 +2261,7 @@ Private Sub btnSendSMS_Click()
     '문자메시지 내용, 90Byte 초과된 내용은 삭제되어 전송됨
     Contents = "전자명세서를 발행하였습니다. 메일을 확인하여 주시기바랍니다"
     
-    Set Response = statementService.SendSMS(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, senderNum, receiverNum, Contents, txtUserID.Text)
+    Set Response = statementService.SendSMS(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, senderNum, receiverNum, Contents)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2300,7 +2300,7 @@ Private Sub btnUpdate_Click()
     Dim i
     
     '[필수] 기재상 작성일자, 날짜형식(yyyyMMdd)
-    Statement.writeDate = "20161011"
+    Statement.writeDate = "20170223"
     
     '[필수] {영수, 청구} 중 기재
     Statement.purposeType = "영수"
@@ -2455,7 +2455,7 @@ Private Sub btnUpdate_Click()
     Statement.propertyBag.Add "Deposit", "10000"
     Statement.propertyBag.Add "Balance", "100000"
     
-    Set Response = statementService.Update(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, Statement, txtUserID.Text)
+    Set Response = statementService.Update(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, Statement)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2527,7 +2527,7 @@ Private Sub btnUpdateCorpInfo_Click()
     '종목
     CorpInfo.bizClass = "종목"
     
-    Set Response = statementService.UpdateCorpInfo(txtCorpNum.Text, CorpInfo, txtUserID.Text)
+    Set Response = statementService.UpdateCorpInfo(txtCorpNum.Text, CorpInfo)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)

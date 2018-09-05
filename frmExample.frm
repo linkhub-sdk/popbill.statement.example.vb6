@@ -1720,7 +1720,7 @@ Private Sub btnListContact_Click()
     
     For Each info In resultList
         tmp = tmp + info.id + " | " + info.email + " | " + info.hp + " | " + info.personName + " | " + CStr(info.searchAllAllowYN) _
-                + info.tel + " | " + info.fax + " | " + CStr(info.mgrYN) + " | " + info.regDT + vbCrLf
+                + info.tel + " | " + info.fax + " | " + CStr(info.mgrYN) + " | " + info.regDT + " | " + CStr(info.state) + vbCrLf
     Next
     
     MsgBox tmp
@@ -2147,7 +2147,7 @@ Private Sub btnSearch_Click()
     Dim DType As String
     Dim SDate As String
     Dim EDate As String
-    Dim State As New Collection
+    Dim state As New Collection
     Dim itemCode As New Collection
     Dim Page As Integer
     Dim PerPage As Integer
@@ -2167,9 +2167,9 @@ Private Sub btnSearch_Click()
     
     '전송상태값 배열, 미기재시 전체상태조회, 문서상태값 3자리숫자 작성
     '2,3번째 와일드카드 가능
-    State.Add "100"
-    State.Add "2**"
-    State.Add "3**"
+    state.Add "100"
+    state.Add "2**"
+    state.Add "3**"
     
     '문서종류코드 배열, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표,126-영수증
     itemCode.Add "121"
@@ -2191,7 +2191,7 @@ Private Sub btnSearch_Click()
     '거래처 정보, 거래처 상호 또는 거래처 사업자등록번호 기재, 미기재시 전체조회
     QString = ""
         
-    Set docSearchList = statementService.Search(txtCorpNum.Text, DType, SDate, EDate, State, itemCode, Page, PerPage, Order, QString)
+    Set docSearchList = statementService.Search(txtCorpNum.Text, DType, SDate, EDate, state, itemCode, Page, PerPage, Order, QString)
      
     If docSearchList Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)

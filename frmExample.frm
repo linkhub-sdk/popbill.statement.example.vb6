@@ -13,10 +13,10 @@ Begin VB.Form frmExample
    Begin VB.CommandButton btnDetachStatement 
       Caption         =   "전자명세서 첨부해제"
       Height          =   375
-      Left            =   3000
+      Left            =   5280
       TabIndex        =   65
-      Top             =   9840
-      Width           =   2115
+      Top             =   8040
+      Width           =   2235
    End
    Begin VB.Frame Frame7 
       Caption         =   " 전자명세서 관련 기능 "
@@ -24,7 +24,7 @@ Begin VB.Form frmExample
       Left            =   240
       TabIndex        =   7
       Top             =   3120
-      Width           =   11475
+      Width           =   13995
       Begin VB.Frame Frame9 
          Caption         =   "즉시발행 프로세스"
          Height          =   2655
@@ -133,18 +133,34 @@ Begin VB.Form frmExample
       End
       Begin VB.Frame Frame12 
          Caption         =   " 부가 서비스"
-         Height          =   3015
+         Height          =   2295
          Left            =   2520
          TabIndex        =   42
          Top             =   4200
-         Width           =   2580
+         Width           =   4980
+         Begin VB.CommandButton btnUpdateemailconfig 
+            Caption         =   "알림메일 전송목록 수정"
+            Height          =   375
+            Left            =   2520
+            TabIndex        =   75
+            Top             =   1680
+            Width           =   2295
+         End
+         Begin VB.CommandButton btnListemailconfig 
+            Caption         =   "알림메일 전송목록 조회"
+            Height          =   375
+            Left            =   2520
+            TabIndex        =   74
+            Top             =   1200
+            Width           =   2295
+         End
          Begin VB.CommandButton btnAttachStatement 
             Caption         =   "전자명세서 첨부"
             Height          =   375
-            Left            =   240
+            Left            =   2520
             TabIndex        =   64
-            Top             =   2070
-            Width           =   2115
+            Top             =   300
+            Width           =   2235
          End
          Begin VB.CommandButton btnFAXSEnd 
             Caption         =   "선팩스 전송"
@@ -182,7 +198,7 @@ Begin VB.Form frmExample
       Begin VB.Frame Frame13 
          Caption         =   " 기타 URL "
          Height          =   1290
-         Left            =   8880
+         Left            =   11400
          TabIndex        =   39
          Top             =   4200
          Width           =   1935
@@ -206,7 +222,7 @@ Begin VB.Form frmExample
       Begin VB.Frame Frame14 
          Caption         =   " 문서 정보 "
          Height          =   2565
-         Left            =   5400
+         Left            =   7920
          TabIndex        =   33
          Top             =   4200
          Width           =   3210
@@ -1716,7 +1732,7 @@ Private Sub btnListContact_Click()
         Exit Sub
     End If
     
-    tmp = "id | email | hp | personName | searchAllAllowYN | tel | fax | mgrYN | regDT " + vbCrLf
+    tmp = "id | email | hp | personName | searchAllAllowYN | tel | fax | mgrYN | regDT | state" + vbCrLf
     
     For Each info In resultList
         tmp = tmp + info.id + " | " + info.email + " | " + info.hp + " | " + info.personName + " | " + CStr(info.searchAllAllowYN) _
@@ -1724,6 +1740,80 @@ Private Sub btnListContact_Click()
     Next
     
     MsgBox tmp
+End Sub
+
+'=========================================================================
+' 전자명세서 관련 메일전송 항목에 대한 전송여부를 목록으로 반환합니다
+'=========================================================================
+Private Sub btnListemailconfig_Click()
+    Dim resultList As Collection
+    Dim i As Integer
+    
+    Set resultList = statementService.ListEmailConfig(txtCorpNum.Text, txtUserID.Text)
+    
+    If resultList Is Nothing Then
+        MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
+        Exit Sub
+    End If
+ 
+    Dim tmp As String
+    
+    tmp = "메일전송유형(EmailType) | 전송여부(SendYN) " + vbCrLf
+    
+    Dim info As PBEmailConfig
+    
+    For i = 1 To resultList.Count
+        If resultList(i).emailType = "SMT_ISSUE" Then
+            tmp = tmp + "공급받는자에게 전자명세서가 발행 되었음을 알려주는 메일 : " + resultList(i).emailType + " | "
+            tmp = tmp + CStr(resultList(i).sendYN) + vbCrLf
+        End If
+        
+        If resultList(i).emailType = "SMT_ACCEPT" Then
+            tmp = tmp + "공급자에게 전자명세서가 승인 되었음을 알려주는 메일 : " + resultList(i).emailType + " | "
+            tmp = tmp + CStr(resultList(i).sendYN) + vbCrLf
+        End If
+        
+        If resultList(i).emailType = "SMT_DENY" Then
+            tmp = tmp + "공급자에게 전자명세서가 거부 되었음을 알려주는 메일 : " + resultList(i).emailType + " | "
+            tmp = tmp + CStr(resultList(i).sendYN) + vbCrLf
+        End If
+        
+        If resultList(i).emailType = "SMT_CANCEL" Then
+            tmp = tmp + "공급받는자에게 전자명세서가 취소 되었음을 알려주는 메일 : " + resultList(i).emailType + " | "
+            tmp = tmp + CStr(resultList(i).sendYN) + vbCrLf
+        End If
+        
+        If resultList(i).emailType = "SMT_CANCEL_ISSUE" Then
+            tmp = tmp + "공급받는자에게 전자명세서가 발행취소 되었음을 알려주는 메일 : " + resultList(i).emailType + " | "
+            tmp = tmp + CStr(resultList(i).sendYN) + vbCrLf
+        End If
+    Next
+    
+    MsgBox tmp
+End Sub
+
+'=========================================================================
+' 전자명세서 관련 메일전송 항목에 대한 전송여부를 수정합니다.
+'=========================================================================
+Private Sub btnUpdateemailconfig_Click()
+    Dim Response As PBResponse
+    Dim emailType As String
+    Dim sendYN As Boolean
+    
+    '메일 전송 유형
+    emailType = "SMT_ISSUE"
+
+    '전송 여부 (True = 전송, False = 미전송)
+    sendYN = True
+    
+    Set Response = statementService.UpdateEmailConfig(txtCorpNum.Text, emailType, sendYN, txtUserID.Text)
+    
+    If Response Is Nothing Then
+        MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
+        Exit Sub
+    End If
+    
+    MsgBox ("응답코드 : " + CStr(Response.code) + vbCrLf + "응답메시지 : " + Response.message)
 End Sub
 
 '=========================================================================
@@ -2581,6 +2671,7 @@ Private Sub btnUpdateCorpInfo_Click()
     
     MsgBox ("응답코드 : " + CStr(Response.code) + vbCrLf + "응답메시지 : " + Response.message)
 End Sub
+
 
 
 Private Sub Form_Load()

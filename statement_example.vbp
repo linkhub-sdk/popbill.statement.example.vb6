@@ -18,6 +18,7 @@ Class=PBContactInfo; PopbillStatement\PBContactInfo.cls
 Class=PBCorpInfo; PopbillStatement\PBCorpInfo.cls
 Class=PBDocSearchList; PopbillStatement\PBDocSearchList.cls
 Class=PBChargeInfo; PopbillStatement\PBChargeInfo.cls
+Class=PBEmailConfig; PopbillStatement\PBEmailConfig.cls
 IconForm="frmExample"
 Startup="frmExample"
 ExeName32="statement_example.exe"

@@ -506,7 +506,7 @@ Begin VB.Form frmExample
          TabIndex        =   68
          Top             =   240
          Width           =   2175
-         Begin VB.CommandButton btnPopbillURL_CHRG 
+         Begin VB.CommandButton btnGetChargeURL 
             Caption         =   "포인트 충전 URL"
             Height          =   375
             Left            =   120
@@ -554,7 +554,7 @@ Begin VB.Form frmExample
          TabIndex        =   26
          Top             =   240
          Width           =   2655
-         Begin VB.CommandButton btnGetPopbillURL_SEAL 
+         Begin VB.CommandButton btnGetSealURL 
             Caption         =   "인감 및 첨부문서 등록 URL"
             Height          =   375
             Left            =   120
@@ -562,7 +562,7 @@ Begin VB.Form frmExample
             Top             =   840
             Width           =   2415
          End
-         Begin VB.CommandButton btnGetPopbillURL 
+         Begin VB.CommandButton btnGetAccessURL 
             Caption         =   "팝빌 로그인 URL"
             Height          =   375
             Left            =   120
@@ -1161,6 +1161,8 @@ Private Sub btnFAXSEnd_Click()
     MsgBox "접수번호 : " + ReceiptNum
 End Sub
 
+
+
 '=========================================================================
 ' 연동회원의 잔여포인트를 확인합니다.
 ' - 과금방식이 파트너과금인 경우 파트너 잔여포인트(GetPartnerBalance API)
@@ -1203,6 +1205,8 @@ Private Sub btnGetChargeInfo_Click()
     
     MsgBox tmp
 End Sub
+
+
 
 '=========================================================================
 ' 연동회원의 회사정보를 확인합니다.
@@ -1528,11 +1532,10 @@ End Sub
 ' 팝빌(www.popbill.com)에 로그인된 팝빌 URL을 반환합니다.
 ' - 보안정책에 따라 반환된 URL은 30초의 유효시간을 갖습니다.
 '=========================================================================
-
-Private Sub btnGetPopbillURL_Click()
+Private Sub btnGetAccessURL_Click()
     Dim url As String
     
-    url = statementService.GetPopbillURL(txtCorpNum.Text, txtUserID.Text, "LOGIN")
+    url = statementService.GetAccessURL(txtCorpNum.Text, txtUserID.Text)
     
     If url = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1546,11 +1549,10 @@ End Sub
 ' 인감 및 첨부문서 등록 URL을 반환합니다.
 ' - URL 보안정책에 따라 반환된 URL은 30초의 유효시간을 갖습니다.
 '=========================================================================
-
-Private Sub btnGetPopbillURL_SEAL_Click()
+Private Sub btnGetSealURL_Click()
     Dim url As String
     
-    url = statementService.GetPopbillURL(txtCorpNum.Text, txtUserID.Text, "SEAL")
+    url = statementService.GetSealURL(txtCorpNum.Text, txtUserID.Text)
     
     If url = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1596,6 +1598,8 @@ Private Sub btnGetPrintURL_Click()
     
     MsgBox "URL : " + vbCrLf + url
 End Sub
+
+
 
 '=========================================================================
 ' 팝빌 > 전자명세서 > 매출문서함 팝업 URL을 반환합니다.
@@ -1820,11 +1824,10 @@ End Sub
 ' 연동회원 포인트 충전 URL을 반환합니다.
 ' - URL 보안정책에 따라 반환된 URL은 30초의 유효시간을 갖습니다.
 '=========================================================================
-
-Private Sub btnPopbillURL_CHRG_Click()
+Private Sub btnGetChargeURL_Click()
     Dim url As String
     
-    url = statementService.GetPopbillURL(txtCorpNum.Text, txtUserID.Text, "CHRG")
+    url = statementService.GetChargeURL(txtCorpNum.Text, txtUserID.Text)
     
     If url = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)

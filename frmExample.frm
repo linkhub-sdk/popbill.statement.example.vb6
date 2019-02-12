@@ -1860,28 +1860,28 @@ Private Sub btnGetInfo_Click()
         Exit Sub
     End If
     
-    tmp = tmp + "itemCode(문서종류코드) :" + CStr(docInfo.itemCode) + vbCrLf
-    tmp = tmp + "itemKey(팝빌 관리번호) : " + docInfo.itemKey + vbCrLf
-    tmp = tmp + "invoiceNum(문서고유번호) : " + docInfo.invoiceNum + vbCrLf
-    tmp = tmp + "mgtKey(문서관리번호) : " + docInfo.mgtKey + vbCrLf
-    tmp = tmp + "taxType(세금형태) : " + docInfo.taxType + vbCrLf
-    tmp = tmp + "writeDate(작성일자) : " + docInfo.writeDate + vbCrLf
-    tmp = tmp + "regDT(임시저장일시) : " + docInfo.regDT + vbCrLf
-    tmp = tmp + "senderCorpName(발신자 상호) : " + docInfo.senderCorpName + vbCrLf
-    tmp = tmp + "senderCorpNum(발신자 사업자번호) : " + docInfo.senderCorpNum + vbCrLf
-    tmp = tmp + "senderPrintYN(발신자 인쇄여부) :" + CStr(docInfo.senderPrintYN) + vbCrLf
-    tmp = tmp + "receiverCorpName(수신자 상호) : " + docInfo.receiverCorpName + vbCrLf
-    tmp = tmp + "receiverCorpNum(수신자 사업자번호) : " + docInfo.receiverCorpNum + vbCrLf
-    tmp = tmp + "receiverPrintYN(수신자 인쇄여부) :" + CStr(docInfo.receiverPrintYN) + vbCrLf
-    tmp = tmp + "supplyCostTotal(공급가액 합계) : " + docInfo.supplyCostTotal + vbCrLf
-    tmp = tmp + "taxTotal(세액 합계) : " + docInfo.taxTotal + vbCrLf
-    tmp = tmp + "purposeType(영수/청구) : " + docInfo.purposeType + vbCrLf
-    tmp = tmp + "issueDT(발행일시) : " + docInfo.issueDT + vbCrLf
-    tmp = tmp + "stateCode(상태코드) :" + CStr(docInfo.stateCode) + vbCrLf
-    tmp = tmp + "stateDT(상태 변경일시) : " + docInfo.stateDT + vbCrLf
-    tmp = tmp + "stateMemo(상태메모) : " + docInfo.stateMemo + vbCrLf
-    tmp = tmp + "openYN(개봉 여부) :" + CStr(docInfo.openYN) + vbCrLf
-    tmp = tmp + "openDT(개봉 일시) : " + docInfo.openDT + vbCrLf
+    tmp = tmp + "itemCode (문서종류코드) :" + CStr(docInfo.itemCode) + vbCrLf
+    tmp = tmp + "itemKey (팝빌 관리번호) : " + docInfo.itemKey + vbCrLf
+    tmp = tmp + "invoiceNum (문서고유번호) : " + docInfo.invoiceNum + vbCrLf
+    tmp = tmp + "mgtKey (문서관리번호) : " + docInfo.mgtKey + vbCrLf
+    tmp = tmp + "taxType (세금형태) : " + docInfo.taxType + vbCrLf
+    tmp = tmp + "writeDate (작성일자) : " + docInfo.writeDate + vbCrLf
+    tmp = tmp + "regDT (임시저장일시) : " + docInfo.regDT + vbCrLf
+    tmp = tmp + "senderCorpName (발신자 상호) : " + docInfo.senderCorpName + vbCrLf
+    tmp = tmp + "senderCorpNum (발신자 사업자번호) : " + docInfo.senderCorpNum + vbCrLf
+    tmp = tmp + "senderPrintYN (발신자 인쇄여부) :" + CStr(docInfo.senderPrintYN) + vbCrLf
+    tmp = tmp + "receiverCorpName (수신자 상호) : " + docInfo.receiverCorpName + vbCrLf
+    tmp = tmp + "receiverCorpNum (수신자 사업자번호) : " + docInfo.receiverCorpNum + vbCrLf
+    tmp = tmp + "receiverPrintYN (수신자 인쇄여부) :" + CStr(docInfo.receiverPrintYN) + vbCrLf
+    tmp = tmp + "supplyCostTotal (공급가액 합계) : " + docInfo.supplyCostTotal + vbCrLf
+    tmp = tmp + "taxTotal (세액 합계) : " + docInfo.taxTotal + vbCrLf
+    tmp = tmp + "purposeType (영수/청구) : " + docInfo.purposeType + vbCrLf
+    tmp = tmp + "issueDT (발행일시) : " + docInfo.issueDT + vbCrLf
+    tmp = tmp + "stateCode (상태코드) :" + CStr(docInfo.stateCode) + vbCrLf
+    tmp = tmp + "stateDT (상태 변경일시) : " + docInfo.stateDT + vbCrLf
+    tmp = tmp + "stateMemo (상태메모) : " + docInfo.stateMemo + vbCrLf
+    tmp = tmp + "openYN (개봉 여부) :" + CStr(docInfo.openYN) + vbCrLf
+    tmp = tmp + "openDT (개봉 일시) : " + docInfo.openDT + vbCrLf
     
     MsgBox tmp
 End Sub
@@ -1945,50 +1945,50 @@ Private Sub btnGetDetailInfo_Click()
         Exit Sub
     End If
     
-    tmp = tmp + "itemCode(문서종류 코드) : " + CStr(docDetailInfo.itemCode) + vbCrLf
-    tmp = tmp + "mgtKey(문서관리번호) : " + docDetailInfo.mgtKey + vbCrLf
-    tmp = tmp + "invoiceNum(문서고유번호) : " + docDetailInfo.invoiceNum + vbCrLf
-    tmp = tmp + "formCode(맞춤양식 코드) : " + docDetailInfo.formCode + vbCrLf
-    tmp = tmp + "writeDate(작성일자) : " + docDetailInfo.writeDate + vbCrLf
-    tmp = tmp + "taxType(세금형태) : " + docDetailInfo.taxType + vbCrLf
-    tmp = tmp + "purposeType(영수/청구) : " + docDetailInfo.purposeType + vbCrLf
-    tmp = tmp + "serialNum(일련번호) : " + docDetailInfo.serialNum + vbCrLf
-    tmp = tmp + "taxTotal(세액 합계) : " + docDetailInfo.taxTotal + vbCrLf
-    tmp = tmp + "supplyCostTotal(공급가액 합계) : " + docDetailInfo.supplyCostTotal + vbCrLf
-    tmp = tmp + "totalAmount(합계금액) : " + docDetailInfo.totalAmount + vbCrLf
-    tmp = tmp + "remark1(비고1) : " + docDetailInfo.remark1 + vbCrLf
-    tmp = tmp + "remark2(비고2) : " + docDetailInfo.remark2 + vbCrLf
-    tmp = tmp + "remark3(비고3) : " + docDetailInfo.remark3 + vbCrLf
+    tmp = tmp + "itemCode (문서종류 코드) : " + CStr(docDetailInfo.itemCode) + vbCrLf
+    tmp = tmp + "mgtKey (문서관리번호) : " + docDetailInfo.mgtKey + vbCrLf
+    tmp = tmp + "invoiceNum (문서고유번호) : " + docDetailInfo.invoiceNum + vbCrLf
+    tmp = tmp + "formCode (맞춤양식 코드) : " + docDetailInfo.formCode + vbCrLf
+    tmp = tmp + "writeDate (작성일자) : " + docDetailInfo.writeDate + vbCrLf
+    tmp = tmp + "taxType (세금형태) : " + docDetailInfo.taxType + vbCrLf
+    tmp = tmp + "purposeType (영수/청구) : " + docDetailInfo.purposeType + vbCrLf
+    tmp = tmp + "serialNum (일련번호) : " + docDetailInfo.serialNum + vbCrLf
+    tmp = tmp + "taxTotal (세액 합계) : " + docDetailInfo.taxTotal + vbCrLf
+    tmp = tmp + "supplyCostTotal (공급가액 합계) : " + docDetailInfo.supplyCostTotal + vbCrLf
+    tmp = tmp + "totalAmount (합계금액) : " + docDetailInfo.totalAmount + vbCrLf
+    tmp = tmp + "remark1 (비고1) : " + docDetailInfo.remark1 + vbCrLf
+    tmp = tmp + "remark2 (비고2) : " + docDetailInfo.remark2 + vbCrLf
+    tmp = tmp + "remark3 (비고3) : " + docDetailInfo.remark3 + vbCrLf
         
-    tmp = tmp + "senderCorpNum(발신자 사업자번호) : " + docDetailInfo.senderCorpNum + vbCrLf
-    tmp = tmp + "senderTaxRegID(발신자 종사업장번호) : " + docDetailInfo.senderTaxRegID + vbCrLf
-    tmp = tmp + "senderCorpName(발신자 상호) : " + docDetailInfo.senderCorpName + vbCrLf
-    tmp = tmp + "senderCEOName(발신자 대표자성명) : " + docDetailInfo.senderCEOName + vbCrLf
-    tmp = tmp + "senderAddr(발신자 주소) : " + docDetailInfo.senderAddr + vbCrLf
-    tmp = tmp + "senderBizClass(발신자 종목) : " + docDetailInfo.senderBizClass + vbCrLf
-    tmp = tmp + "senderBizType(발신자 업태) : " + docDetailInfo.senderBizType + vbCrLf
-    tmp = tmp + "senderContactName(발신자 성명) : " + docDetailInfo.senderContactName + vbCrLf
-    tmp = tmp + "senderDeptName(발신자 부서) : " + docDetailInfo.senderDeptName + vbCrLf
-    tmp = tmp + "senderTEL(발신자 연락처) : " + docDetailInfo.senderTEL + vbCrLf
-    tmp = tmp + "senderHP(발신자 휴대전화) : " + docDetailInfo.senderHP + vbCrLf
-    tmp = tmp + "senderEmail(발신자 이메일) : " + docDetailInfo.senderEmail + vbCrLf
-    tmp = tmp + "senderFAX(발신자 팩스) : " + docDetailInfo.senderFAX + vbCrLf
+    tmp = tmp + "senderCorpNum (발신자 사업자번호) : " + docDetailInfo.senderCorpNum + vbCrLf
+    tmp = tmp + "senderTaxRegID (발신자 종사업장번호) : " + docDetailInfo.senderTaxRegID + vbCrLf
+    tmp = tmp + "senderCorpName (발신자 상호) : " + docDetailInfo.senderCorpName + vbCrLf
+    tmp = tmp + "senderCEOName (발신자 대표자성명) : " + docDetailInfo.senderCEOName + vbCrLf
+    tmp = tmp + "senderAddr (발신자 주소) : " + docDetailInfo.senderAddr + vbCrLf
+    tmp = tmp + "senderBizClass (발신자 종목) : " + docDetailInfo.senderBizClass + vbCrLf
+    tmp = tmp + "senderBizType (발신자 업태) : " + docDetailInfo.senderBizType + vbCrLf
+    tmp = tmp + "senderContactName (발신자 성명) : " + docDetailInfo.senderContactName + vbCrLf
+    tmp = tmp + "senderDeptName (발신자 부서) : " + docDetailInfo.senderDeptName + vbCrLf
+    tmp = tmp + "senderTEL (발신자 연락처) : " + docDetailInfo.senderTEL + vbCrLf
+    tmp = tmp + "senderHP (발신자 휴대전화) : " + docDetailInfo.senderHP + vbCrLf
+    tmp = tmp + "senderEmail (발신자 이메일) : " + docDetailInfo.senderEmail + vbCrLf
+    tmp = tmp + "senderFAX (발신자 팩스) : " + docDetailInfo.senderFAX + vbCrLf
 
-    tmp = tmp + "receiverCorpNum(수신자 사업자번호) : " + docDetailInfo.receiverCorpNum + vbCrLf
-    tmp = tmp + "receiverTaxRegID(수신자 종사업장번호) : " + docDetailInfo.receiverTaxRegID + vbCrLf
-    tmp = tmp + "receiverCorpName(수신자 상호) : " + docDetailInfo.receiverCorpName + vbCrLf
-    tmp = tmp + "receiverCEOName(수신자 대표자성명) : " + docDetailInfo.receiverCEOName + vbCrLf
-    tmp = tmp + "receiverAddr(수신자 주소) : " + docDetailInfo.receiverAddr + vbCrLf
-    tmp = tmp + "receiverBizClass(수신자 종목) : " + docDetailInfo.receiverBizClass + vbCrLf
-    tmp = tmp + "receiverBizType(수신자 업태) : " + docDetailInfo.receiverBizType + vbCrLf
-    tmp = tmp + "receiverContactName(수신자 성명) : " + docDetailInfo.receiverContactName + vbCrLf
-    tmp = tmp + "receiverDeptName(수신자 부서) : " + docDetailInfo.receiverDeptName + vbCrLf
-    tmp = tmp + "receiverTEL(수신자 연락처) : " + docDetailInfo.receiverTEL + vbCrLf
-    tmp = tmp + "receiverHP(수신자 휴대전화) : " + docDetailInfo.receiverHP + vbCrLf
-    tmp = tmp + "receiverEmail(수신자 이메일) : " + docDetailInfo.receiverEmail + vbCrLf
-    tmp = tmp + "receiverFAX(수신자 팩스) : " + docDetailInfo.receiverFAX + vbCrLf
+    tmp = tmp + "receiverCorpNum (수신자 사업자번호) : " + docDetailInfo.receiverCorpNum + vbCrLf
+    tmp = tmp + "receiverTaxRegID (수신자 종사업장번호) : " + docDetailInfo.receiverTaxRegID + vbCrLf
+    tmp = tmp + "receiverCorpName (수신자 상호) : " + docDetailInfo.receiverCorpName + vbCrLf
+    tmp = tmp + "receiverCEOName (수신자 대표자성명) : " + docDetailInfo.receiverCEOName + vbCrLf
+    tmp = tmp + "receiverAddr (수신자 주소) : " + docDetailInfo.receiverAddr + vbCrLf
+    tmp = tmp + "receiverBizClass (수신자 종목) : " + docDetailInfo.receiverBizClass + vbCrLf
+    tmp = tmp + "receiverBizType (수신자 업태) : " + docDetailInfo.receiverBizType + vbCrLf
+    tmp = tmp + "receiverContactName (수신자 성명) : " + docDetailInfo.receiverContactName + vbCrLf
+    tmp = tmp + "receiverDeptName (수신자 부서) : " + docDetailInfo.receiverDeptName + vbCrLf
+    tmp = tmp + "receiverTEL (수신자 연락처) : " + docDetailInfo.receiverTEL + vbCrLf
+    tmp = tmp + "receiverHP (수신자 휴대전화) : " + docDetailInfo.receiverHP + vbCrLf
+    tmp = tmp + "receiverEmail (수신자 이메일) : " + docDetailInfo.receiverEmail + vbCrLf
+    tmp = tmp + "receiverFAX (수신자 팩스) : " + docDetailInfo.receiverFAX + vbCrLf
         
-    tmp = tmp + "detailList(상세항목)" + vbCrLf
+    tmp = tmp + "detailList (상세항목)" + vbCrLf
     tmp = tmp + "serialNum(일련번호) | purchaseDT(거래일자) | itemName(품목명) | spec(규격) | qty(수량) |"
     tmp = tmp + "unitCost(단가) | supplyCost(공급가액) | tax(세액) | remark(비고) | spare1(여분1) "
     tmp = tmp + "spare2(여분2) | spare3(여분3) | spare4(여분4) | spare5(여분5) "

@@ -1288,7 +1288,8 @@ Private Sub btnRegistIssue_Click()
     '발행시 알림문자 발송여부
     Statement.smssendYN = True
     
-    '상세항목 추가.
+    '상세항목 추가. (배열 길이 제한 없음)
+    '일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다
     Set Statement.detailList = New Collection
     
     For i = 1 To 5
@@ -1495,7 +1496,8 @@ Private Sub btnRegister_Click()
     '발행시 알림문자 발송여부
     Statement.smssendYN = True
   
-    '상세항목 추가.
+    '상세항목 추가. (배열 길이 제한 없음)
+    '일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다
     Set Statement.detailList = New Collection
 
     For i = 1 To 5
@@ -1667,7 +1669,8 @@ Private Sub btnUpdate_Click()
     '발행시 알림문자 발송여부
     Statement.smssendYN = True
     
-    '상세항목 추가.
+    '상세항목 추가. (배열 길이 제한 없음)
+    '일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다
     Set Statement.detailList = New Collection
     
     For i = 1 To 5
@@ -2412,7 +2415,7 @@ Private Sub btnDetachStatement_Click()
     Dim SubItemCode As Integer
     Dim SubMgtKey As String
     
-    '첨부할 전자명세서 종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
+    '첨부해제할 전자명세서 종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
     SubItemCode = 121
     
     '첨부해제할 전자명세서 관리번호
@@ -2481,6 +2484,12 @@ End Sub
 
 '=========================================================================
 ' 전자명세서 관련 메일전송 항목에 대한 전송여부를 수정합니다.
+' 메일전송유형
+' SMT_ISSUE : 공급받는자에게 전자명세서가 발행 되었음을 알려주는 메일입니다.
+' SMT_ACCEPT : 공급자에게 전자명세서가 승인 되었음을 알려주는 메일입니다.
+' SMT_DENY : 공급자에게 전자명세서가 거부 되었음을 알려주는 메일입니다.
+' SMT_CANCEL : 공급받는자에게 전자명세서가 취소 되었음을 알려주는 메일입니다.
+' SMT_CANCEL_ISSUE : 공급받는자에게 전자명세서가 발행취소 되었음을 알려주는 메일입니다.
 '=========================================================================
 Private Sub btnUpdateemailconfig_Click()
     Dim Response As PBResponse

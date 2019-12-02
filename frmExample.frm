@@ -1252,7 +1252,7 @@ Private Sub btnRegistIssue_Click()
     Statement.receiverContactName = "수신자 담당자명"
     
     '수신자 메일주소
-    Statement.receiverEmail = "code@linkhub.co.kr"
+    Statement.receiverEmail = "test@test.com"
     
     '=========================================================================
     '                     전자명세서 기재사항
@@ -1305,6 +1305,7 @@ Private Sub btnRegistIssue_Click()
         newDetail.spare3 = "spare3"             '여분3
         newDetail.spare4 = "spare4"             '여분4
         newDetail.spare5 = "spare5"             '여분5
+        
         Statement.detailList.Add newDetail
     Next
     

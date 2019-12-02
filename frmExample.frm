@@ -704,7 +704,7 @@ Attribute VB_Exposed = False
 '
 ' 팝빌 전자명세서 API VB 6.0 SDK Example
 '
-' - 업데이트 일자 : 2019-09-26
+' - 업데이트 일자 : 2019-12-02
 ' - 연동 기술지원 연락처 : 1600-9854 / 070-4304-2991
 ' - 연동 기술지원 이메일 : code@linkhub.co.kr
 '
@@ -1169,11 +1169,14 @@ Private Sub btnRegistIssue_Click()
     Dim newDetail As PBDocDetail
     Dim Response As PBResponse
     Dim i
+    Dim emailSubject As String
+    
+    
     
     Statement.memo = "즉시발행 메모"
     
     '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
-    Statement.writeDate = "20190207"
+    Statement.writeDate = "20191202"
     
     '[필수] {영수, 청구} 중 기재
     Statement.purposeType = "영수"
@@ -1255,7 +1258,7 @@ Private Sub btnRegistIssue_Click()
     Statement.receiverContactName = "수신자 담당자명"
     
     '수신자 메일주소
-    Statement.receiverEmail = "test@receiver.com"
+    Statement.receiverEmail = "code@linkhub.co.kr"
     
     '=========================================================================
     '                     전자명세서 기재사항
@@ -1323,7 +1326,10 @@ Private Sub btnRegistIssue_Click()
     Statement.propertyBag.Add "Deposit", "10000"     '입금액
     Statement.propertyBag.Add "Balance", "100000"    '현잔액
     
-    Set Response = statementService.RegistIssue(txtCorpNum.Text, Statement)
+    '안내메일 제목, 미기재시 기본양식으로 전송.
+    emailSubject = ""
+    
+    Set Response = statementService.RegistIssue(txtCorpNum.Text, Statement, txtUserID.Text, emailSubject)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)

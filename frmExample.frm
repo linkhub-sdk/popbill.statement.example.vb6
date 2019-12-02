@@ -716,12 +716,6 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-'=========================================================================
-' - 인증정보(링크아이디, 비밀키)는 파트너의 연동회원을 식별하는
-'   인증에 사용되는 정보로 유출되지 않도록 주의하시기 바랍니다.
-' - 상업용 전환이후에도 인증정보(링크아이디, 비밀키)는 변경되지 않습니다.
-'=========================================================================
-
 '링크아이디
 Private Const LinkID = "TESTER"
 
@@ -1144,8 +1138,8 @@ Private Sub btnGetPartnerURL_CHRG_Click()
 End Sub
 
 '=========================================================================
-' 전자명세서 관리번호 중복여부를 확인합니다.
-' - 관리번호는 1~24자리로 숫자, 영문 '-', '_' 조합으로 구성할 수 있습니다.
+' 전자명세서 문서번호 중복여부를 확인합니다.
+' - 문서번호는 1~24자리로 숫자, 영문 '-', '_' 조합으로 구성할 수 있습니다.
 '=========================================================================
 Private Sub btnCheckMgtKeyInUse_Click()
     Dim Response As PBResponse
@@ -1190,7 +1184,7 @@ Private Sub btnRegistIssue_Click()
     '[필수] 전자명세서 종류코드
     Statement.itemCode = selectedItemCode
     
-    '[필수] 문서관리번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
+    '[필수] 문서번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
     Statement.mgtKey = txtMgtKey.Text
     
     
@@ -1361,7 +1355,7 @@ End Sub
 
 '=========================================================================
 ' 1건의 전자명세서를 삭제합니다.
-' - 전자명세서를 삭제하면 사용된 문서관리번호(mgtKey)를 재사용할 수 있습니다.
+' - 전자명세서를 삭제하면 사용된 문서번호(mgtKey)를 재사용할 수 있습니다.
 ' - 삭제가능한 문서 상태 : [임시저장], [발행취소], [거부]
 '=========================================================================
 Private Sub btnDelete_sub_Click()
@@ -1401,7 +1395,7 @@ Private Sub btnRegister_Click()
     '[필수] 전자명세서 종류코드
     Statement.itemCode = selectedItemCode
     
-    '[필수] 문서관리번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
+    '[필수] 문서번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
     Statement.mgtKey = txtMgtKey.Text
     
     
@@ -1573,7 +1567,7 @@ Private Sub btnUpdate_Click()
     '[필수] 전자명세서 종류코드
     Statement.itemCode = selectedItemCode
     
-    '[필수] 문서관리번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
+    '[필수] 문서번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
     Statement.mgtKey = txtMgtKey.Text
     
     
@@ -1763,7 +1757,7 @@ End Sub
 
 '=========================================================================
 ' 1건의 전자명세서를 삭제합니다.
-' - 전자명세서를 삭제하면 사용된 문서관리번호(mgtKey)를 재사용할 수 있습니다.
+' - 전자명세서를 삭제하면 사용된 문서번호(mgtKey)를 재사용할 수 있습니다.
 ' - 삭제가능한 문서 상태 : [임시저장], [발행취소], [거부]
 '=========================================================================
 Private Sub btnDelete_Click()
@@ -1869,9 +1863,9 @@ Private Sub btnGetInfo_Click()
     End If
     
     tmp = tmp + "itemCode (문서종류코드) :" + CStr(docInfo.itemCode) + vbCrLf
-    tmp = tmp + "itemKey (팝빌 관리번호) : " + docInfo.itemKey + vbCrLf
+    tmp = tmp + "itemKey (팝빌 문서번호) : " + docInfo.itemKey + vbCrLf
     tmp = tmp + "invoiceNum (문서고유번호) : " + docInfo.invoiceNum + vbCrLf
-    tmp = tmp + "mgtKey (문서관리번호) : " + docInfo.mgtKey + vbCrLf
+    tmp = tmp + "mgtKey (문서번호) : " + docInfo.mgtKey + vbCrLf
     tmp = tmp + "taxType (세금형태) : " + docInfo.taxType + vbCrLf
     tmp = tmp + "writeDate (작성일자) : " + docInfo.writeDate + vbCrLf
     tmp = tmp + "regDT (임시저장일시) : " + docInfo.regDT + vbCrLf
@@ -1905,7 +1899,7 @@ Private Sub btnGetInfos_Click()
     Dim tmp As String
     Dim info As PBDocInfo
     
-    '전자명세서 문서관리번호 배열 (최대 1000건)
+    '전자명세서 문서번호 배열 (최대 1000건)
     KeyList.Add "20150113-01"
     KeyList.Add "20150113-02"
     KeyList.Add "20150113-03"
@@ -1918,7 +1912,7 @@ Private Sub btnGetInfos_Click()
         Exit Sub
     End If
         
-    tmp = "itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서관리번호) | taxType(세금형태) | " + vbCrLf
+    tmp = "itemCode(문서종류코드) | itemKey(팝빌 문서번호) | invoiceNum(문서고유번호) | mgtKey(문서번호) | taxType(세금형태) | " + vbCrLf
     tmp = tmp + "writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | " + vbCrLf
     tmp = tmp + "senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | " + vbCrLf
     tmp = tmp + "receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | " + vbCrLf
@@ -1954,7 +1948,7 @@ Private Sub btnGetDetailInfo_Click()
     End If
     
     tmp = tmp + "itemCode (문서종류 코드) : " + CStr(docDetailInfo.itemCode) + vbCrLf
-    tmp = tmp + "mgtKey (문서관리번호) : " + docDetailInfo.mgtKey + vbCrLf
+    tmp = tmp + "mgtKey (문서번호) : " + docDetailInfo.mgtKey + vbCrLf
     tmp = tmp + "invoiceNum (문서고유번호) : " + docDetailInfo.invoiceNum + vbCrLf
     tmp = tmp + "formCode (맞춤양식 코드) : " + docDetailInfo.formCode + vbCrLf
     tmp = tmp + "writeDate (작성일자) : " + docDetailInfo.writeDate + vbCrLf
@@ -2085,7 +2079,7 @@ Private Sub btnSearch_Click()
     tmp = tmp + "message (응답메시지) : " + docSearchList.message + vbCrLf + vbCrLf
     
 
-    tmp = tmp + "itemCode(문서종류코드) | itemKey(팝빌 관리번호) | invoiceNum(문서고유번호) | mgtKey(문서관리번호) | taxType(세금형태) | " + vbCrLf
+    tmp = tmp + "itemCode(문서종류코드) | itemKey(팝빌 문서번호) | invoiceNum(문서고유번호) | mgtKey(문서번호) | taxType(세금형태) | " + vbCrLf
     tmp = tmp + "writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | " + vbCrLf
     tmp = tmp + "senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | " + vbCrLf
     tmp = tmp + "receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | " + vbCrLf
@@ -2242,7 +2236,7 @@ Private Sub btnFAXSend_Click()
     '[필수] 전자명세서 종류코드
     Statement.itemCode = selectedItemCode
     
-    '[필수] 문서관리번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
+    '[필수] 문서번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
     Statement.mgtKey = txtMgtKey.Text
     
     
@@ -2399,7 +2393,7 @@ Private Sub btnAttachStatement_Click()
     '첨부할 전자명세서 종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
     SubItemCode = 121
     
-    '첨부할 전자명세서 관리번호
+    '첨부할 전자명세서 문서번호
     SubMgtKey = "20190207-01"
     
     Set Response = statementService.AttachStatement(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, SubItemCode, SubMgtKey)
@@ -2423,7 +2417,7 @@ Private Sub btnDetachStatement_Click()
     '첨부해제할 전자명세서 종류코드, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
     SubItemCode = 121
     
-    '첨부해제할 전자명세서 관리번호
+    '첨부해제할 전자명세서 문서번호
     SubMgtKey = "20190207-01"
       
     Set Response = statementService.DetachStatement(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, SubItemCode, SubMgtKey)
@@ -2576,7 +2570,7 @@ Private Sub btnGetMassPrintURL_Click()
     Dim url As String
     Dim KeyList As New Collection
     
-    '전자명세서 문서관리번호 배열 (최대 100건)
+    '전자명세서 문서번호 배열 (최대 100건)
     KeyList.Add "20190207-01"
     KeyList.Add "20190207-02"
     KeyList.Add "20190207-03"

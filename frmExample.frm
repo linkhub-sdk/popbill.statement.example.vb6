@@ -704,7 +704,7 @@ Attribute VB_Exposed = False
 '
 ' 팝빌 전자명세서 API VB 6.0 SDK Example
 '
-' - 업데이트 일자 : 2019-12-02
+' - 업데이트 일자 : 2020-01-31
 ' - 연동 기술지원 연락처 : 1600-9854 / 070-4304-2991
 ' - 연동 기술지원 이메일 : code@linkhub.co.kr
 '
@@ -740,6 +740,7 @@ End Function
 '=========================================================================
 ' 해당 사업자의 파트너 연동회원 가입여부를 확인합니다.
 ' - LinkID는 인증정보로 설정되어 있는 링크아이디 값입니다.
+' - https://docs.popbill.com/statement/vb/api#CheckIsMember
 '=========================================================================
 Private Sub btnCheckIsMember_Click()
     Dim Response As PBResponse
@@ -756,6 +757,7 @@ End Sub
 
 '=========================================================================
 ' 팝빌 회원아이디 중복여부를 확인합니다.
+' - https://docs.popbill.com/statement/vb/api#CheckID
 '=========================================================================
 Private Sub btnCheckID_Click()
     Dim Response As PBResponse
@@ -772,6 +774,7 @@ End Sub
 
 '=========================================================================
 ' 팝빌 연동회원 가입을 요청합니다.
+' - https://docs.popbill.com/statement/vb/api#JoinMember
 '=========================================================================
 Private Sub btnJoinMember_Click()
     Dim joinData As New PBJoinForm
@@ -831,6 +834,7 @@ End Sub
 
 '=========================================================================
 ' 전자명세서 발행단가를 확인합니다.
+' - https://docs.popbill.com/statement/vb/api#GetUnitCost
 '=========================================================================
 Private Sub btnUnitCost_Click()
     Dim unitCost As Double
@@ -847,6 +851,7 @@ End Sub
 
 '=========================================================================
 ' 연동회원의 전자명세서 API 서비스 과금정보를 확인합니다.
+' - https://docs.popbill.com/statement/vb/api#GetChargeInfo
 '=========================================================================
 Private Sub btnGetChargeInfo_Click()
     Dim ChargeInfo As PBChargeInfo
@@ -869,6 +874,7 @@ End Sub
 '=========================================================================
 ' 팝빌(www.popbill.com)에 로그인된 팝빌 URL을 반환합니다.
 ' - 보안정책에 따라 반환된 URL은 30초의 유효시간을 갖습니다.
+' - https://docs.popbill.com/statement/vb/api#GetAccessURL
 '=========================================================================
 Private Sub btnGetAccessURL_Click()
     Dim url As String
@@ -903,6 +909,7 @@ End Sub
 
 '=========================================================================
 ' 연동회원의 담당자를 신규로 등록합니다.
+' - https://docs.popbill.com/statement/vb/api#RegistContact
 '=========================================================================
 Private Sub btnRegistContact_Click()
     Dim joinData As New PBContactInfo
@@ -947,6 +954,7 @@ End Sub
 
 '=========================================================================
 ' 연동회원의 담당자 목록을 확인합니다.
+' - https://docs.popbill.com/statement/vb/api#ListContact
 '=========================================================================
 Private Sub btnListContact_Click()
     Dim resultList As Collection
@@ -973,6 +981,7 @@ End Sub
 
 '=========================================================================
 ' 연동회원의 담당자 정보를 수정합니다.
+' - https://docs.popbill.com/statement/vb/api#UpdateContact
 '=========================================================================
 Private Sub btnUpdateContact_Click()
     Dim joinData As New PBContactInfo
@@ -1014,6 +1023,7 @@ End Sub
 
 '=========================================================================
 ' 연동회원의 회사정보를 확인합니다.
+' - https://docs.popbill.com/statement/vb/api#GetCorpInfo
 '=========================================================================
 Private Sub btnGetCorpInfo_Click()
     Dim CorpInfo As PBCorpInfo
@@ -1037,6 +1047,7 @@ End Sub
 
 '=========================================================================
 ' 연동회원의 회사정보를 수정합니다
+' - https://docs.popbill.com/statement/vb/api#UpdateCorpInfo
 '=========================================================================
 Private Sub btnUpdateCorpInfo_Click()
     Dim CorpInfo As New PBCorpInfo
@@ -1071,6 +1082,7 @@ End Sub
 ' 연동회원의 잔여포인트를 확인합니다.
 ' - 과금방식이 파트너과금인 경우 파트너 잔여포인트(GetPartnerBalance API)
 '   를 통해 확인하시기 바랍니다.
+' - https://docs.popbill.com/statement/vb/api#GetBalance
 '=========================================================================
 Private Sub btnGetBalance_Click()
     Dim balance As Double
@@ -1088,6 +1100,7 @@ End Sub
 '=========================================================================
 ' 연동회원 포인트 충전 URL을 반환합니다.
 ' - URL 보안정책에 따라 반환된 URL은 30초의 유효시간을 갖습니다.
+' - https://docs.popbill.com/statement/vb/api#GetChargeURL
 '=========================================================================
 Private Sub btnGetChargeURL_Click()
     Dim url As String
@@ -1106,6 +1119,7 @@ End Sub
 ' 파트너 잔여포인트를 확인합니다.
 ' - 과금방식이 연동과금인 경우 연동회원 잔여포인트(GetBalance API)
 '   를 통해 확인하시기 바랍니다.
+' - https://docs.popbill.com/statement/vb/api#GetPartnerBalance
 '=========================================================================
 Private Sub btnGetPartnerBalance_Click()
     Dim balance As Double
@@ -1123,6 +1137,7 @@ End Sub
 '=========================================================================
 ' 파트너 포인트 충전 URL을 반환합니다.
 ' - URL 보안정책에 따라 반환된 URL은 30초의 유효시간을 갖습니다.
+' - https://docs.popbill.com/statement/vb/api#GetPartnerURL
 '=========================================================================
 Private Sub btnGetPartnerURL_CHRG_Click()
     Dim url As String
@@ -1140,6 +1155,7 @@ End Sub
 '=========================================================================
 ' 전자명세서 문서번호 중복여부를 확인합니다.
 ' - 문서번호는 1~24자리로 숫자, 영문 '-', '_' 조합으로 구성할 수 있습니다.
+' - https://docs.popbill.com/statement/vb/api#CheckMgtKeyInUse
 '=========================================================================
 Private Sub btnCheckMgtKeyInUse_Click()
     Dim Response As PBResponse
@@ -1156,6 +1172,7 @@ End Sub
 
 '=========================================================================
 ' 1건의 전자명세서를 즉시발행 처리합니다.
+' - https://docs.popbill.com/statement/vb/api#RegistIssue
 '=========================================================================
 
 Private Sub btnRegistIssue_Click()
@@ -1336,6 +1353,7 @@ End Sub
 
 '=========================================================================
 ' 1건의 전자명세서를 [발행취소] 처리합니다.
+' - https://docs.popbill.com/statement/vb/api#Cancel
 '=========================================================================
 Private Sub btnCancelIssue_sub_Click()
     Dim Response As PBResponse
@@ -1357,7 +1375,7 @@ End Sub
 '=========================================================================
 ' 1건의 전자명세서를 삭제합니다.
 ' - 전자명세서를 삭제하면 사용된 문서번호(mgtKey)를 재사용할 수 있습니다.
-' - 삭제가능한 문서 상태 : [임시저장], [발행취소], [거부]
+' - https://docs.popbill.com/statement/vb/api#Delete
 '=========================================================================
 Private Sub btnDelete_sub_Click()
     Dim Response As PBResponse
@@ -1373,7 +1391,8 @@ Private Sub btnDelete_sub_Click()
 End Sub
 
 '=========================================================================
-'1건의 전자명세서 임시저장 합니다.
+' 1건의 전자명세서 임시저장 합니다.
+' - https://docs.popbill.com/statement/vb/api#Register
 '=========================================================================
 Private Sub btnRegister_Click()
     Dim Statement As New PBStatement
@@ -1546,6 +1565,7 @@ End Sub
 '=========================================================================
 ' 1건의 전자명세서를 수정합니다.
 ' - [임시저장] 상태의 전자명세서만 수정할 수 있습니다.
+' - https://docs.popbill.com/statement/vb/api#Update
 '=========================================================================
 Private Sub btnUpdate_Click()
     Dim Statement As New PBStatement
@@ -1718,6 +1738,7 @@ End Sub
 '=========================================================================
 ' 1건의 [임시저장] 상태의 전자명세서를 발행처리합니다.
 ' - 발행시 포인트가 차감됩니다.
+' - https://docs.popbill.com/statement/vb/api#StmIssue
 '=========================================================================
 Private Sub btnIssue_Click()
     Dim Response As PBResponse
@@ -1738,6 +1759,7 @@ End Sub
 
 '=========================================================================
 ' 1건의 전자명세서를 [발행취소] 처리합니다.
+' - https://docs.popbill.com/statement/vb/api#Cancel
 '=========================================================================
 Private Sub btnCancelIssue_Click()
     Dim Response As PBResponse
@@ -1759,7 +1781,7 @@ End Sub
 '=========================================================================
 ' 1건의 전자명세서를 삭제합니다.
 ' - 전자명세서를 삭제하면 사용된 문서번호(mgtKey)를 재사용할 수 있습니다.
-' - 삭제가능한 문서 상태 : [임시저장], [발행취소], [거부]
+' - https://docs.popbill.com/statement/vb/api#Delete
 '=========================================================================
 Private Sub btnDelete_Click()
     Dim Response As PBResponse
@@ -1778,6 +1800,7 @@ End Sub
 ' 전자명세서에 첨부파일을 등록합니다.
 ' - 첨부파일 등록은 전자명세서가 [임시저장] 상태인 경우에만 가능합니다.
 ' - 첨부파일은 최대 5개까지 등록할 수 있습니다.
+' - https://docs.popbill.com/statement/vb/api#AttachFile
 '=========================================================================
 
 Private Sub btnAttachFile_Click()
@@ -1806,6 +1829,7 @@ End Sub
 ' 전자명세서에 첨부된 파일의 목록을 확인합니다.
 ' - 응답항목 중 파일아이디(AttachedFile) 항목은 파일삭제(DeleteFile API)
 '   호출시 이용할 수 있습니다.
+' - https://docs.popbill.com/statement/vb/api#GetFiles
 '=========================================================================
 Private Sub btnGetFiles_Click()
     Dim resultList As Collection
@@ -1833,6 +1857,7 @@ End Sub
 ' 전자명세서에 첨부된 파일을 삭제합니다.
 ' - 파일을 식별하는 파일아이디는 첨부파일 목록(GetFileList API) 의 응답항목
 '   중 파일아이디(AttachedFile) 값을 통해 확인할 수 있습니다.
+' - https://docs.popbill.com/statement/vb/api#DeleteFile
 '=========================================================================
 Private Sub btnDeleteFile_Click()
     Dim Response As PBResponse
@@ -1849,8 +1874,7 @@ End Sub
 
 '=========================================================================
 ' 1건의 전자명세서 상태/요약 정보를 확인합니다.
-' - 응답항목에 대한 자세한 정보는 "[전자명세서 API 연동매뉴얼] > 3.3.1.
-'   GetInfo (상태 확인)"을 참조하시기 바랍니다.
+' - https://docs.popbill.com/statement/vb/api#GetInfo
 '=========================================================================
 Private Sub btnGetInfo_Click()
     Dim docInfo As PBDocInfo
@@ -1891,8 +1915,7 @@ End Sub
 
 '=========================================================================
 ' 다수건의 전자명세서 상태/요약 정보를 확인합니다. (최대 1000건)
-' - 응답항목에 대한 자세한 정보는 "[전자명세서 API 연동매뉴얼] > 3.3.2.
-'   GetInfos (상태 대량 확인)"을 참조하시기 바랍니다.
+' - https://docs.popbill.com/statement/vb/api#GetInfos
 '=========================================================================
 Private Sub btnGetInfos_Click()
     Dim resultList As Collection
@@ -1932,8 +1955,7 @@ End Sub
 
 '=========================================================================
 ' 전자명세서 1건의 상세정보를 조회합니다.
-' - 응답항목에 대한 자세한 사항은 "[전자명세서 API 연동매뉴얼] > 4.1.
-'   전자명세서 구성" 을 참조하시기 바랍니다.
+' - https://docs.popbill.com/statement/vb/api#GetDetailInfo
 '=========================================================================
 Private Sub btnGetDetailInfo_Click()
     Dim docDetailInfo As PBStatement
@@ -2013,8 +2035,7 @@ End Sub
 
 '=========================================================================
 ' 검색조건을 사용하여 전자명세서 목록을 조회합니다.
-' - 응답항목에 대한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >
-'   3.2.4. Search (목록 조회)" 를 참조하시기 바랍니다.
+' - https://docs.popbill.com/statement/vb/api#Search
 '=========================================================================
 
 Private Sub btnSearch_Click()
@@ -2101,9 +2122,7 @@ End Sub
 
 '=========================================================================
 ' 전자명세서 상태 변경이력을 확인합니다.
-' - 상태 변경이력 확인(GetLogs API) 응답항목에 대한 자세한 정보는
-'   "[전자명세서 API 연동매뉴얼] > 3.2.5 GetLogs (상태 변경이력 확인)"
-'   을 참조하시기 바랍니다.
+' - https://docs.popbill.com/statement/vb/api#GetLogs
 '=========================================================================
 Private Sub btnGetLogs_Click()
     Dim resultList As Collection
@@ -2128,6 +2147,7 @@ End Sub
 
 '=========================================================================
 ' 발행 안내메일을 재전송합니다.
+' - https://docs.popbill.com/statement/vb/api#SendEmail
 '=========================================================================
 Private Sub btnSendEmail_Click()
     Dim Response As PBResponse
@@ -2149,8 +2169,7 @@ End Sub
 '=========================================================================
 ' 알림문자를 전송합니다. (단문/SMS- 한글 최대 45자)
 ' - 알림문자 전송시 포인트가 차감됩니다. (전송실패시 환불처리)
-' - 전송내역 확인은 "팝빌 로그인" > [문자 팩스] > [문자] > [전송내역] 탭에서
-'   전송결과를 확인할 수 있습니다.
+' - https://docs.popbill.com/statement/vb/api#SendSMS
 '=========================================================================
 Private Sub btnSendSMS_Click()
     Dim Response As PBResponse
@@ -2182,6 +2201,7 @@ End Sub
 ' - 팩스 전송 요청시 포인트가 차감됩니다. (전송실패시 환불처리)
 ' - 전송내역 확인은 "팝빌 로그인" > [문자 팩스] > [팩스] > [전송내역]
 '   메뉴에서 전송결과를 확인할 수 있습니다.
+' - https://docs.popbill.com/statement/vb/api#SendFAX
 '=========================================================================
 Private Sub btnSendFAX_Click()
     Dim Response As PBResponse
@@ -2209,6 +2229,7 @@ End Sub
 ' - 팩스 전송 요청시 포인트가 차감됩니다. (전송실패시 환불처리)
 ' - 전송내역 확인은 "팝빌 로그인" > [문자 팩스] > [팩스] > [전송내역]
 '   메뉴에서 전송결과를 확인할 수 있습니다.
+' - https://docs.popbill.com/statement/vb/api#FAXSend
 '=========================================================================
 Private Sub btnFAXSend_Click()
     Dim Statement As New PBStatement
@@ -2385,6 +2406,7 @@ End Sub
 
 '=========================================================================
 ' 전자명세서에 다른 전자명세서 1건을 첨부합니다.
+' - https://docs.popbill.com/statement/vb/api#AttachStatement
 '=========================================================================
 Private Sub btnAttachStatement_Click()
     Dim Response As PBResponse
@@ -2409,6 +2431,7 @@ End Sub
 
 '=========================================================================
 ' 전자명세서에 첨부된 다른 전자명세서를 첨부해제합니다.
+' - https://docs.popbill.com/statement/vb/api#DetachStatement
 '=========================================================================
 Private Sub btnDetachStatement_Click()
     Dim Response As PBResponse
@@ -2433,6 +2456,7 @@ End Sub
 
 '=========================================================================
 ' 전자명세서 관련 메일전송 항목에 대한 전송여부를 목록으로 반환합니다.
+' - https://docs.popbill.com/statement/vb/api#ListEmailConfig
 '=========================================================================
 Private Sub btnListemailconfig_Click()
     Dim resultList As Collection
@@ -2484,6 +2508,8 @@ End Sub
 
 '=========================================================================
 ' 전자명세서 관련 메일전송 항목에 대한 전송여부를 수정합니다.
+' - https://docs.popbill.com/statement/vb/api#UpdateEmailConfig
+'
 ' 메일전송유형
 ' SMT_ISSUE : 공급받는자에게 전자명세서가 발행 되었음을 알려주는 메일입니다.
 ' SMT_ACCEPT : 공급자에게 전자명세서가 승인 되었음을 알려주는 메일입니다.
@@ -2515,6 +2541,7 @@ End Sub
 '=========================================================================
 ' 1건의 전자명세서 보기 팝업 URL을 반환합니다.
 ' - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.
+' - https://docs.popbill.com/statement/vb/api#GetPopUpURL
 '=========================================================================
 Private Sub btnGetPopUpURL_Click()
     Dim url As String
@@ -2532,6 +2559,7 @@ End Sub
 '=========================================================================
 ' 1건의 전자명세서 인쇄팝업 URL을 반환합니다.
 ' - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.
+' - https://docs.popbill.com/statement/vb/api#GetPrintURL
 '=========================================================================
 Private Sub btnGetPrintURL_Click()
     Dim url As String
@@ -2549,6 +2577,7 @@ End Sub
 '=========================================================================
 ' 전자명세서 인쇄(수신자) URL을 반환합니다.
 ' - URL 보안정책에 따라 반환된 URL은 30초의 유효시간을 갖습니다.
+' - https://docs.popbill.com/statement/vb/api#GetEPrintURL
 '=========================================================================
 Private Sub btnGetEPrintUrl_Click()
     Dim url As String
@@ -2566,6 +2595,7 @@ End Sub
 '=========================================================================
 ' 다수건의 전자명세서 인쇄팝업 URL을 반환합니다. (최대 100건)
 ' - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.
+' - https://docs.popbill.com/statement/vb/api#GetMassPrintURL
 '=========================================================================
 Private Sub btnGetMassPrintURL_Click()
     Dim url As String
@@ -2590,6 +2620,7 @@ End Sub
 '=========================================================================
 ' 수신자 메일링크 URL을 반환합니다.
 ' - 메일링크 URL은 유효시간이 존재하지 않습니다.
+' - https://docs.popbill.com/statement/vb/api#GetMailURL
 '=========================================================================
 Private Sub btnGetMailURL_Click()
     Dim url As String
@@ -2607,6 +2638,7 @@ End Sub
 '=========================================================================
 ' 팝빌 > 전자명세서 > 매출문서함 팝업 URL을 반환합니다.
 ' - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.
+' - https://docs.popbill.com/statement/vb/api#GetURL
 '=========================================================================
 Private Sub btnGetURL_PBOX_Click()
     Dim url As String
@@ -2624,6 +2656,7 @@ End Sub
 '=========================================================================
 ' 팝빌 > 전자명세서 > 임시(연동)문서함 팝업 URL을 반환합니다.
 ' - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.
+' - https://docs.popbill.com/statement/vb/api#GetURL
 '=========================================================================
 Private Sub btnGetURL_TBOX_Click()
     Dim url As String
@@ -2639,6 +2672,7 @@ Private Sub btnGetURL_TBOX_Click()
 End Sub
 
 Private Sub Form_Load()
+
     '전자명세서 객체 초기화
     statementService.Initialize LinkID, SecretKey
     

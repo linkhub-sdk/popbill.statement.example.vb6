@@ -24,7 +24,7 @@ Begin VB.Form frmExample
       Left            =   240
       TabIndex        =   7
       Top             =   3120
-      Width           =   13515
+      Width           =   16635
       Begin VB.Frame Frame9 
          Caption         =   "즉시발행 프로세스"
          Height          =   2655
@@ -198,7 +198,7 @@ Begin VB.Form frmExample
       Begin VB.Frame Frame13 
          Caption         =   " 기타 URL "
          Height          =   1290
-         Left            =   11400
+         Left            =   13920
          TabIndex        =   39
          Top             =   4200
          Width           =   1935
@@ -225,7 +225,15 @@ Begin VB.Form frmExample
          Left            =   7920
          TabIndex        =   33
          Top             =   4200
-         Width           =   3210
+         Width           =   5250
+         Begin VB.CommandButton btnGetViewURL 
+            Caption         =   "전자명세서 보기 URL (메뉴, 버튼x)"
+            Height          =   615
+            Left            =   3120
+            TabIndex        =   76
+            Top             =   240
+            Width           =   1935
+         End
          Begin VB.CommandButton btnGetMailURL 
             Caption         =   "전자명세서 메일링크 URL"
             Height          =   390
@@ -704,7 +712,7 @@ Attribute VB_Exposed = False
 '
 ' 팝빌 전자명세서 API VB 6.0 SDK Example
 '
-' - 업데이트 일자 : 2020-01-31
+' - 업데이트 일자 : 2020-07-20
 ' - 연동 기술지원 연락처 : 1600-9854 / 070-4304-2991
 ' - 연동 기술지원 이메일 : code@linkhub.co.kr
 '
@@ -770,6 +778,24 @@ Private Sub btnCheckID_Click()
     End If
     
     MsgBox ("응답코드 : " + CStr(Response.code) + vbCrLf + "응답메시지 : " + Response.message)
+End Sub
+
+'=========================================================================
+' 1건의 전자명세서 보기 팝업 URL을 반환합니다.(메뉴, 버튼X)
+' - 보안정책으로 인해 반환된 URL의 유효시간은 30초입니다.
+'=========================================================================
+Private Sub btnGetViewURL_Click()
+    Dim url As String
+  
+    url = statementService.GetViewURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    
+    If url = "" Then
+        MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
+        Exit Sub
+    End If
+    
+    MsgBox "URL : " + vbCrLf + url
+    
 End Sub
 
 '=========================================================================

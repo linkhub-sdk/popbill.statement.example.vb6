@@ -1371,7 +1371,7 @@ Private Sub btnRegistIssue_Click()
         Exit Sub
     End If
     
-    MsgBox ("응답코드 : " + CStr(Response.code) + vbCrLf + "응답메시지 : " + Response.message)
+    MsgBox ("응답코드 : " + CStr(Response.code) + vbCrLf + "응답메시지 : " + Response.message + vbCrLf + "팝빌 승인번호 : " + Response.invoiceNum)
 End Sub
 
 '=========================================================================

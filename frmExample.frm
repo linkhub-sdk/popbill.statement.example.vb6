@@ -752,7 +752,7 @@ Attribute VB_Exposed = False
 '
 ' 팝빌 전자명세서 API VB 6.0 SDK Example
 '
-' - 업데이트 일자 : 2021-10-07
+' - 업데이트 일자 : 2021-10-13
 ' - 연동 기술지원 연락처 : 1600-9854 / 070-4304-2991
 ' - 연동 기술지원 이메일 : code@linkhub.co.kr
 '
@@ -765,7 +765,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 '링크아이디
-Private Const LinkID = "TESTER"
+Private Const linkID = "TESTER"
 
 '비밀키. 유출에 주의하시기 바랍니다.
 Private Const SecretKey = "SwWxqU+0TErBXy/9TVjIPEnI0VTUMMSQZtJf3Ed8q3I="
@@ -793,7 +793,7 @@ End Function
 Private Sub btnCheckIsMember_Click()
     Dim Response As PBResponse
     
-    Set Response = statementService.CheckIsMember(txtCorpNum.Text, LinkID)
+    Set Response = statementService.CheckIsMember(txtCorpNum.Text, linkID)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -883,7 +883,7 @@ Private Sub btnJoinMember_Click()
     joinData.Password = "asdf$%^123"
     
     '파트너링크 아이디
-    joinData.LinkID = LinkID
+    joinData.linkID = linkID
     
     '사업자번호, '-'제외, 10자리
     joinData.CorpNum = "1234567890"
@@ -1037,7 +1037,7 @@ Private Sub btnRegistContact_Click()
     '담당자 권한, 1-개인 / 2-읽기 / 3-회사
     joinData.searchRole = 3
         
-    Set Response = statementService.RegistContact(txtCorpNum.Text, joinData)
+    Set Response = statementService.RegistContact(txtCorpNum.Text, joinData, txtUserID.Text)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2807,7 +2807,7 @@ End Sub
 Private Sub Form_Load()
 
     '전자명세서 객체 초기화
-    statementService.Initialize LinkID, SecretKey
+    statementService.Initialize linkID, SecretKey
     
     '연동환경설정값, True-개발용 False-상업용
     statementService.IsTest = True

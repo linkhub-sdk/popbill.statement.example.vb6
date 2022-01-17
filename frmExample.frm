@@ -755,7 +755,7 @@ Attribute VB_Exposed = False
 ' - 업데이트 일자 : 2022-01-17
 ' - 연동 기술지원 연락처 : 1600-9854
 ' - 연동 기술지원 이메일 : code@linkhubcorp.com
-' - VB6 SDK 적용방법 안내 : https://docs.popbill.com/taxinvoice/tutorial/vb
+' - VB6 SDK 적용방법 안내 : https://docs.popbill.com/statement/tutorial/vb
 '
 ' <테스트 연동개발 준비사항>
 ' 1) 25, 28번 라인에 선언된 링크아이디(LinkID)와 비밀키(SecretKey)를

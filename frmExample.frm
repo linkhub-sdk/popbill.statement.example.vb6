@@ -753,13 +753,13 @@ Attribute VB_Exposed = False
 ' 팝빌 전자명세서 API VB 6.0 SDK Example
 '
 ' - 업데이트 일자 : 2022-01-17
-' - 연동 기술지원 연락처 : 1600-9854 / 070-4304-2991
-' - 연동 기술지원 이메일 : code@linkhub.co.kr
+' - 연동 기술지원 연락처 : 1600-9854
+' - 연동 기술지원 이메일 : code@linkhubcorp.com
+' - VB6 SDK 적용방법 안내 : https://docs.popbill.com/taxinvoice/tutorial/vb
 '
 ' <테스트 연동개발 준비사항>
 ' 1) 25, 28번 라인에 선언된 링크아이디(LinkID)와 비밀키(SecretKey)를
 '    링크허브 가입시 메일로 발급받은 인증정보를 참조하여 변경합니다.
-' 2) 팝빌 개발용 사이트(test.popbill.com)에 연동회원으로 가입합니다.
 '=========================================================================
 
 Option Explicit
@@ -989,6 +989,7 @@ End Sub
 '=========================================================================
 ' 인감 및 첨부문서 등록 URL을 반환합니다.
 ' - 반환되는 URL은 보안 정책상 30초 동안 유효하며, 시간을 초과한 후에는 해당 URL을 통한 페이지 접근이 불가합니다.
+' - https://docs.popbill.com/statement/vb/api#GetSealURL
 '=========================================================================
 Private Sub btnGetSealURL_Click()
 
@@ -1315,9 +1316,9 @@ Private Sub btnRegistIssue_Click()
     Statement.memo = "즉시발행 메모"
     
     '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
-    Statement.writeDate = "20210902"
+    Statement.writeDate = "20220101"
     
-    '[필수] {영수, 청구} 중 기재
+    '[필수] {영수, 청구, 없음} 중 기재
     Statement.purposeType = "영수"
     
     '[필수] 과세형태, {과세, 영세, 면세} 중 기재
@@ -1436,7 +1437,7 @@ Private Sub btnRegistIssue_Click()
     For i = 1 To 5
         Set newDetail = New PBDocDetail
         newDetail.serialNum = i                 '일련번호 1부터 순차 기재
-        newDetail.purchaseDT = "20210902"       '거래일자(yyyyMMdd)
+        newDetail.purchaseDT = "20220101"       '거래일자(yyyyMMdd)
         newDetail.itemName = "품명" + CStr(i)   '품목명
         newDetail.spec = "규격"                 '규격
         newDetail.unit = "단위"                 '단위
@@ -1456,8 +1457,8 @@ Private Sub btnRegistIssue_Click()
     
     '=========================================================================
     '전자명세서 추가속성
-    ' - 추가속성에 관한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >
-    '   5.2. 기본양식 추가속성 테이블"을 참조하시기 바랍니다.
+    ' - 추가속성에 관한 자세한 사항은 아래의 URL 참조.
+    ' - https://docs.popbill.com/statement/propertyBag?lang=vb
     '=========================================================================
     
     Set Statement.propertyBag = CreateObject("Scripting.Dictionary")
@@ -1530,9 +1531,9 @@ Private Sub btnRegister_Click()
     Dim i
     
     '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
-    Statement.writeDate = "20210902"
+    Statement.writeDate = "20220101"
     
-    '[필수] {영수, 청구} 중 기재
+    '[필수] {영수, 청구, 없음} 중 기재
     Statement.purposeType = "영수"
     
     '[필수] 과세형태, {과세, 영세, 면세} 중 기재
@@ -1651,7 +1652,7 @@ Private Sub btnRegister_Click()
     For i = 1 To 5
         Set newDetail = New PBDocDetail
         newDetail.serialNum = i                 '일련번호 1부터 순차 기재
-        newDetail.purchaseDT = "20210902"       '거래일자(yyyyMMdd)
+        newDetail.purchaseDT = "20220101"       '거래일자(yyyyMMdd)
         newDetail.itemName = "품명" + CStr(i)   '품목명
         newDetail.spec = "규격"                 '규격
         newDetail.unit = "단위"                 '단위
@@ -1670,8 +1671,8 @@ Private Sub btnRegister_Click()
     
     '=========================================================================
     '전자명세서 추가속성
-    ' - 추가속성에 관한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >
-    '   5.2. 기본양식 추가속성 테이블"을 참조하시기 바랍니다.
+    ' - 추가속성에 관한 자세한 사항은 아래의 URL 참조.
+    ' - https://docs.popbill.com/statement/propertyBag?lang=vb
     '=========================================================================
     
     Set Statement.propertyBag = CreateObject("Scripting.Dictionary")
@@ -1702,9 +1703,9 @@ Private Sub btnUpdate_Click()
     Dim i
     
     '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
-    Statement.writeDate = "20210902"
+    Statement.writeDate = "20220101"
     
-    '[필수] {영수, 청구} 중 기재
+    '[필수] {영수, 청구, 없음} 중 기재
     Statement.purposeType = "영수"
     
     '[필수] 과세형태, {과세, 영세, 면세} 중 기재
@@ -1824,7 +1825,7 @@ Private Sub btnUpdate_Click()
     For i = 1 To 5
         Set newDetail = New PBDocDetail
         newDetail.serialNum = i                 '일련번호 1부터 순차 기재
-        newDetail.purchaseDT = "20210902"       '거래일자(yyyyMMdd)
+        newDetail.purchaseDT = "20220101"       '거래일자(yyyyMMdd)
         newDetail.itemName = "품명" + CStr(i)   '품목명
         newDetail.spec = "규격"                 '규격
         newDetail.unit = "단위"                 '단위
@@ -1843,8 +1844,8 @@ Private Sub btnUpdate_Click()
     
     '=========================================================================
     '전자명세서 추가속성
-    ' - 추가속성에 관한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >
-    '   5.2. 기본양식 추가속성 테이블"을 참조하시기 바랍니다.
+    ' - 추가속성에 관한 자세한 사항은 아래의 URL 참조.
+    ' - https://docs.popbill.com/statement/propertyBag?lang=vb
     '=========================================================================
     
     Set Statement.propertyBag = CreateObject("Scripting.Dictionary")
@@ -2180,13 +2181,12 @@ Private Sub btnSearch_Click()
     DType = "W"
     
     '[필수] 시작일자, yyyyMMdd
-    SDate = "20210901"
+    SDate = "20220101"
     
     '[필수] 종료일자, yyyyMMdd
-    EDate = "20210910"
+    EDate = "20220130"
     
     '전송상태값 배열, 미기재시 전체상태조회, 문서상태값 3자리숫자 작성 2,3번째 와일드카드 가능
-    '상태코드에 대한 자세한 사항은 "[전자명세서 API 연동매뉴얼] > 5.1 전자명세서 상태코드" 를 참조하시기 바랍니다.
     state.Add "100"
     state.Add "2**"
     state.Add "3**"
@@ -2370,9 +2370,9 @@ Private Sub btnFAXSend_Click()
     Statement.receiveNum = "070111222"
        
     '[필수] 기재상 작성일자, 날자형식(yyyyMMdd)
-    Statement.writeDate = "20210902"
+    Statement.writeDate = "20220101"
     
-    '[필수] {영수, 청구} 중 기재
+    '[필수] {영수, 청구, 없음} 중 기재
     Statement.purposeType = "영수"
     
     '[필수] 과세형태, {과세, 영세, 면세} 중 기재
@@ -2491,7 +2491,7 @@ Private Sub btnFAXSend_Click()
     For i = 1 To 5
         Set newDetail = New PBDocDetail
         newDetail.serialNum = i                 '일련번호 1부터 순차 기재
-        newDetail.purchaseDT = "20210902"       '거래일자(yyyyMMdd)
+        newDetail.purchaseDT = "20220101"       '거래일자(yyyyMMdd)
         newDetail.itemName = "품명" + CStr(i)   '품목명
         newDetail.spec = "규격"                 '규격
         newDetail.unit = "단위"                 '단위
@@ -2510,8 +2510,8 @@ Private Sub btnFAXSend_Click()
     
     '=========================================================================
     '전자명세서 추가속성
-    ' - 추가속성에 관한 자세한 사항은 "[전자명세서 API 연동매뉴얼] >
-    '   5.2. 기본양식 추가속성 테이블"을 참조하시기 바랍니다.
+    ' - 추가속성에 관한 자세한 사항은 아래의 URL 참조.
+    ' - https://docs.popbill.com/statement/propertyBag?lang=vb
     '=========================================================================
     
     Set Statement.propertyBag = CreateObject("Scripting.Dictionary")
@@ -2543,7 +2543,7 @@ Private Sub btnAttachStatement_Click()
     SubItemCode = 121
     
     '첨부할 전자명세서 문서번호
-    SubMgtKey = "20210902-01"
+    SubMgtKey = "20220101-01"
     
     Set Response = statementService.AttachStatement(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, SubItemCode, SubMgtKey)
     
@@ -2568,7 +2568,7 @@ Private Sub btnDetachStatement_Click()
     SubItemCode = 121
     
     '첨부해제할 전자명세서 문서번호
-    SubMgtKey = "20210902-01"
+    SubMgtKey = "20220101-01"
       
     Set Response = statementService.DetachStatement(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, SubItemCode, SubMgtKey)
     
@@ -2731,10 +2731,10 @@ Private Sub btnGetMassPrintURL_Click()
     Dim KeyList As New Collection
     
     '전자명세서 문서번호 배열 (최대 100건)
-    KeyList.Add "20210902-01"
-    KeyList.Add "20210902-02"
-    KeyList.Add "20210902-03"
-    KeyList.Add "20210902-04"
+    KeyList.Add "20220101-01"
+    KeyList.Add "20220101-02"
+    KeyList.Add "20220101-03"
+    KeyList.Add "20220101-04"
     
     url = statementService.GetMassPrintURL(txtCorpNum.Text, selectedItemCode, KeyList)
      
@@ -2812,13 +2812,10 @@ Private Sub Form_Load()
     '연동환경설정값, True-개발용 False-상업용
     statementService.IsTest = True
     
-    '인증토큰 IP제한기능 사용여부, True-권장
+    '인증토큰 IP제한기능 사용여부, True-사용, False-미사용, 기본값(True)
     statementService.IPRestrictOnOff = True
     
-    ' 팝빌 API 서비스 고정 IP 사용여부, True-사용, False-미사용, 기본값(False)
-    statementService.UseStaticIP = False
-    
-    ' 로컬시스템 시간 사용여부 True-사용, Fasle-미사용, 기본값(False)
+    '로컬시스템 시간 사용여부 True-사용, Fasle-미사용, 기본값(False)
     statementService.UseLocalTimeYN = False
     
     

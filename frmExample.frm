@@ -1428,7 +1428,7 @@ Private Sub btnRegistIssue_Click()
     Statement.bankBookYN = False
     
     '발행시 알림문자 발송여부
-    Statement.smssendYN = True
+    Statement.smssendYN = False
     
     '상세항목 추가. (배열 길이 제한 없음)
     '일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다
@@ -1643,7 +1643,7 @@ Private Sub btnRegister_Click()
     Statement.bankBookYN = False
     
     '발행시 알림문자 발송여부
-    Statement.smssendYN = True
+    Statement.smssendYN = False
   
     '상세항목 추가. (배열 길이 제한 없음)
     '일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다
@@ -1816,7 +1816,7 @@ Private Sub btnUpdate_Click()
     Statement.bankBookYN = False
     
     '발행시 알림문자 발송여부
-    Statement.smssendYN = True
+    Statement.smssendYN = False
     
     '상세항목 추가. (배열 길이 제한 없음)
     '일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다
@@ -2483,7 +2483,7 @@ Private Sub btnFAXSend_Click()
     Statement.bankBookYN = False
     
     '발행시 알림문자 발송여부
-    Statement.smssendYN = True
+    Statement.smssendYN = False
   
     '상세항목 추가.
     Set Statement.detailList = New Collection

@@ -829,6 +829,7 @@ Private Sub btnGetContactInfo_Click()
     Dim info As PBContactInfo
     Dim ContactID As String
     
+    '확인할 담당자 아이디
     ContactID = ""
     
     Set info = statementService.GetContactInfo(txtCorpNum.Text, ContactID, txtUserID.Text)

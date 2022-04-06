@@ -750,29 +750,31 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '=========================================================================
 '
-' 팝빌 전자명세서 API VB 6.0 SDK Example
+' 팝빌 전자명세서 API VB SDK Example
 '
-' - 업데이트 일자 : 2022-01-17
+' - 업데이트 일자 : 2022-04-06
 ' - 연동 기술지원 연락처 : 1600-9854
 ' - 연동 기술지원 이메일 : code@linkhubcorp.com
-' - VB6 SDK 적용방법 안내 : https://docs.popbill.com/statement/tutorial/vb
+' - VB SDK 적용방법 안내 : https://docs.popbill.com/statement/tutorial/vb
 '
 ' <테스트 연동개발 준비사항>
-' 1) 25, 28번 라인에 선언된 링크아이디(LinkID)와 비밀키(SecretKey)를
+' 1) 19, 22번 라인에 선언된 링크아이디(LinkID)와 비밀키(SecretKey)를
 '    링크허브 가입시 메일로 발급받은 인증정보를 참조하여 변경합니다.
+'
 '=========================================================================
 
 Option Explicit
 
 '링크아이디
-Private Const linkID = "TESTER"
+Private Const LinkID = "TESTER"
 
-'비밀키. 유출에 주의하시기 바랍니다.
+'비밀키
 Private Const SecretKey = "SwWxqU+0TErBXy/9TVjIPEnI0VTUMMSQZtJf3Ed8q3I="
 
-'전자명세서 서비스 객체 생성
+'전자명세서 서비스 모듈 선언
 Private statementService As New PBDocService
 
+'명세서코드 반환
 Private Function selectedItemCode() As Integer
     selectedItemCode = 121
  
@@ -782,18 +784,16 @@ Private Function selectedItemCode() As Integer
     If cboItemCode.Text = "발주서" Then selectedItemCode = 124
     If cboItemCode.Text = "입금표" Then selectedItemCode = 125
     If cboItemCode.Text = "영수증" Then selectedItemCode = 126
-    
 End Function
 
 '=========================================================================
 ' 사업자번호를 조회하여 연동회원 가입여부를 확인합니다.
-' - LinkID는 인증정보로 설정되어 있는 링크아이디 값입니다.
 ' - https://docs.popbill.com/statement/vb/api#CheckIsMember
 '=========================================================================
 Private Sub btnCheckIsMember_Click()
     Dim Response As PBResponse
     
-    Set Response = statementService.CheckIsMember(txtCorpNum.Text, linkID)
+    Set Response = statementService.CheckIsMember(txtCorpNum.Text, LinkID)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -830,7 +830,7 @@ Private Sub btnGetContactInfo_Click()
     Dim ContactID As String
     
     '확인할 담당자 아이디
-    ContactID = ""
+    ContactID = "testkorea"
     
     Set info = statementService.GetContactInfo(txtCorpNum.Text, ContactID, txtUserID.Text)
     
@@ -839,12 +839,12 @@ Private Sub btnGetContactInfo_Click()
         Exit Sub
     End If
     
-    tmp = "id(아이디) | personName(성명) | email(이메일) | hp(휴대폰번호) |  fax(팩스번호) | tel(연락처) | " _
+    tmp = "id(아이디) | personName(성명) | email(이메일) | tel(연락처) | " _
          + "regDT(등록일시) | searchRole(담당자 권한) | mgrYN(관리자 여부) | state(상태) " + vbCrLf
     
    
-    tmp = tmp + info.id + " | " + info.personName + " | " + info.email + " | " + info.hp + " | " + info.fax _
-        + info.tel + " | " + info.regDT + " | " + CStr(info.searchRole) + " | " + CStr(info.mgrYN) + " | " + CStr(info.state) + vbCrLf
+    tmp = tmp + info.id + " | " + info.personName + " | " + info.email + " | " + info.tel + " | " _
+            + info.regDT + " | " + CStr(info.searchRole) + " | " + CStr(info.mgrYN) + " | " + CStr(info.state) + vbCrLf
         
     MsgBox tmp
 End Sub
@@ -855,36 +855,35 @@ End Sub
 ' - https://docs.popbill.com/statement/vb/api#GetViewURL
 '=========================================================================
 Private Sub btnGetViewURL_Click()
-    Dim url As String
-  
-    url = statementService.GetViewURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    Dim URL As String
     
-    If url = "" Then
+    URL = statementService.GetViewURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
-    
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
-' 사용자를 연동회원으로 가입처리합니다.
-' - https://docs.popbill.com/statement/vb/api#JoinMember
+' 사용하고자 하는 아이디의 중복여부를 확인합니다.
+' - https://docs.popbill.com/statement/vb/api#CheckID
 '=========================================================================
 Private Sub btnJoinMember_Click()
     Dim joinData As New PBJoinForm
     Dim Response As PBResponse
     
-    '아이디, 6자이상 50자 미만
+    '아이디, 6자이상 50자 이하
     joinData.id = "userid"
     
     '비밀번호, 8자 이상 20자 이하(영문, 숫자, 특수문자 조합)
     joinData.Password = "asdf$%^123"
     
     '파트너링크 아이디
-    joinData.linkID = linkID
+    joinData.LinkID = LinkID
     
     '사업자번호, '-'제외, 10자리
     joinData.CorpNum = "1234567890"
@@ -912,12 +911,6 @@ Private Sub btnJoinMember_Click()
     
     '담당자 연락처, 최대 20자
     joinData.ContactTEL = "02-999-9999"
-    
-    '담당자 휴대폰번호, 최대 20자
-    joinData.ContactHP = "010-1234-5678"
-    
-    '담당자 팩스번호, 최대 20자
-    joinData.ContactFAX = "02-999-9998"
     
     Set Response = statementService.JoinMember(joinData)
     
@@ -974,37 +967,37 @@ End Sub
 ' - https://docs.popbill.com/statement/vb/api#GetAccessURL
 '=========================================================================
 Private Sub btnGetAccessURL_Click()
-    Dim url As String
+    Dim URL As String
         
-    url = statementService.GetAccessURL(txtCorpNum.Text, txtUserID.Text)
+    URL = statementService.GetAccessURL(txtCorpNum.Text, txtUserID.Text)
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
-' 인감 및 첨부문서 등록 URL을 반환합니다.
+' 전자명세서에 첨부할 인감, 사업자등록증, 통장사본을 등록하는 페이지의 팝업 URL을 반환합니다.
 ' - 반환되는 URL은 보안 정책상 30초 동안 유효하며, 시간을 초과한 후에는 해당 URL을 통한 페이지 접근이 불가합니다.
 ' - https://docs.popbill.com/statement/vb/api#GetSealURL
 '=========================================================================
 Private Sub btnGetSealURL_Click()
 
-    Dim url As String
+    Dim URL As String
     
-    url = statementService.GetSealURL(txtCorpNum.Text, txtUserID.Text)
+    URL = statementService.GetSealURL(txtCorpNum.Text, txtUserID.Text)
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
@@ -1015,8 +1008,8 @@ Private Sub btnRegistContact_Click()
     Dim joinData As New PBContactInfo
     Dim Response As PBResponse
     
-    '담당자 아이디, 6자 이상 50자 미만
-    joinData.id = "VB6STATE_01"
+    '담당자 아이디, 6자 이상 50자 이하
+    joinData.id = "testkorea"
     
     '비밀번호, 8자 이상 20자 이하(영문, 숫자, 특수문자 조합)
     joinData.Password = "asdf$%^123"
@@ -1027,19 +1020,13 @@ Private Sub btnRegistContact_Click()
     '담당자 연락처, 최대 20자
     joinData.tel = "070-1234-1234"
     
-    '담당자 휴대폰번호, 최대 20자
-    joinData.hp = "010-1234-1234"
-    
-    '담당자 팩스번,최대 20자
-    joinData.fax = "070-1234-1234"
-    
     '담당자 메일주소, 최대 100자
     joinData.email = "test@test.com"
     
     '담당자 권한, 1-개인 / 2-읽기 / 3-회사
     joinData.searchRole = 3
         
-    Set Response = statementService.RegistContact(txtCorpNum.Text, joinData, txtUserID.Text)
+    Set Response = statementService.RegistContact(txtCorpNum.Text, joinData)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -1065,11 +1052,11 @@ Private Sub btnListContact_Click()
         Exit Sub
     End If
     
-    tmp = "id(아이디) | personName(성명) | email(이메일) | hp(휴대폰번호) |  fax(팩스번호) | tel(연락처) | " _
+    tmp = "id(아이디) | personName(성명) | email(이메일) | tel(연락처) | " _
          + "regDT(등록일시) | searchRole(담당자 권한) | mgrYN(관리자 여부) | state(상태) " + vbCrLf
     
     For Each info In resultList
-        tmp = tmp + info.id + " | " + info.personName + " | " + info.email + " | " + info.hp + " | " + info.fax _
+        tmp = tmp + info.id + " | " + info.personName + " | " + info.email + " | " _
         + info.tel + " | " + info.regDT + " | " + CStr(info.searchRole) + " | " + CStr(info.mgrYN) + " | " + CStr(info.state) + vbCrLf
     Next
     
@@ -1092,12 +1079,6 @@ Private Sub btnUpdateContact_Click()
     
     '담당자 연락처, 최대 20자
     joinData.tel = "070-1234-1234"
-    
-    '담당자 휴대폰번호, 최대 20자
-    joinData.hp = "010-1234-1234"
-        
-    '담당자 팩스번호, 최대 20자
-    joinData.fax = "070-1234-1234"
     
     '담당자 이메일, 최대 100자
     joinData.email = "test@test.com"
@@ -1174,7 +1155,6 @@ End Sub
 
 '=========================================================================
 ' 연동회원의 잔여포인트를 확인합니다.
-' - 과금방식이 파트너과금인 경우 파트너 잔여포인트(GetPartnerBalance API)를 통해 확인하시기 바랍니다.
 ' - https://docs.popbill.com/statement/vb/api#GetBalance
 '=========================================================================
 Private Sub btnGetBalance_Click()
@@ -1196,17 +1176,17 @@ End Sub
 ' - https://docs.popbill.com/statement/vb/api#GetChargeURL
 '=========================================================================
 Private Sub btnGetChargeURL_Click()
-    Dim url As String
+    Dim URL As String
     
-    url = statementService.GetChargeURL(txtCorpNum.Text, txtUserID.Text)
+    URL = statementService.GetChargeURL(txtCorpNum.Text, txtUserID.Text)
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
@@ -1215,17 +1195,17 @@ End Sub
 ' - https://docs.popbill.com/statement/vb/api#GetPaymentURL
 '=========================================================================
 Private Sub btnGetPaymentURL_Click()
-    Dim url As String
+    Dim URL As String
            
-    url = statementService.GetPaymentURL(txtCorpNum.Text, txtUserID.Text)
+    URL = statementService.GetPaymentURL(txtCorpNum.Text, txtUserID.Text)
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
@@ -1234,22 +1214,21 @@ End Sub
 ' - https://docs.popbill.com/statement/vb/api#GetUseHistoryURL
 '=========================================================================
 Private Sub btnGetUseHistoryURL_Click()
-    Dim url As String
+    Dim URL As String
            
-    url = statementService.GetUseHistoryURL(txtCorpNum.Text, txtUserID.Text)
+    URL = statementService.GetUseHistoryURL(txtCorpNum.Text, txtUserID.Text)
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
 ' 파트너의 잔여포인트를 확인합니다.
-' - 과금방식이 연동과금인 경우 연동회원 잔여포인트(GetBalance API)를 이용하시기 바랍니다.
 ' - https://docs.popbill.com/statement/vb/api#GetPartnerBalance
 '=========================================================================
 Private Sub btnGetPartnerBalance_Click()
@@ -1271,22 +1250,22 @@ End Sub
 ' - https://docs.popbill.com/statement/vb/api#GetPartnerURL
 '=========================================================================
 Private Sub btnGetPartnerURL_CHRG_Click()
-    Dim url As String
+    Dim URL As String
     
-    url = statementService.GetPartnerURL(txtCorpNum.Text, "CHRG")
+    URL = statementService.GetPartnerURL(txtCorpNum.Text, "CHRG")
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
 ' 파트너가 전자명세서 관리 목적으로 할당하는 문서번호의 사용여부를 확인합니다.
-' - 최대 24자리, 영문, 숫자 '-', '_'를 조합하여 사업자별로 중복되지 않도록 구성
+' - 이미 사용 중인 문서번호는 중복 사용이 불가하고, 전자명세서가 삭제된 경우에만 문서번호의 재사용이 가능합니다.
 ' - https://docs.popbill.com/statement/vb/api#CheckMgtKeyInUse
 '=========================================================================
 Private Sub btnCheckMgtKeyInUse_Click()
@@ -1307,6 +1286,7 @@ End Sub
 ' - 팝빌 사이트 [전자명세서] > [환경설정] > [전자명세서 관리] 메뉴의 발행시 자동승인 옵션 설정을 통해 전자명세서를 "발행완료" 상태가 아닌 "승인대기" 상태로 발행 처리 할 수 있습니다.
 ' - https://docs.popbill.com/statement/vb/api#RegistIssue
 '=========================================================================
+
 Private Sub btnRegistIssue_Click()
     Dim Statement As New PBStatement
     Dim newDetail As PBDocDetail
@@ -1331,10 +1311,10 @@ Private Sub btnRegistIssue_Click()
     '[필수] 전자명세서 종류코드
     Statement.itemCode = selectedItemCode
     
-    '[필수] 문서번호, 최대 24자리, 영문, 숫자 '-', '_'를 조합하여 사업자별로 중복되지 않도록 구성
+    '[필수] 문서번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
     Statement.mgtKey = txtMgtKey.Text
     
-
+    
     '=========================================================================
     '                               발신자 정보
     '=========================================================================
@@ -1399,6 +1379,8 @@ Private Sub btnRegistIssue_Click()
     Statement.receiverContactName = "수신자 담당자명"
     
     '수신자 메일주소
+    '팝빌 개발환경에서 테스트하는 경우에도 안내 메일이 전송되므로,
+    '실제 거래처의 메일주소가 기재되지 않도록 주의
     Statement.receiverEmail = "test@test.com"
     
     '=========================================================================
@@ -1452,14 +1434,11 @@ Private Sub btnRegistIssue_Click()
         newDetail.spare3 = "spare3"             '여분3
         newDetail.spare4 = "spare4"             '여분4
         newDetail.spare5 = "spare5"             '여분5
-        
         Statement.detailList.Add newDetail
     Next
     
     '=========================================================================
     '전자명세서 추가속성
-    ' - 추가속성에 관한 자세한 사항은 아래의 URL 참조.
-    ' - https://docs.popbill.com/statement/propertyBag?lang=vb
     '=========================================================================
     
     Set Statement.propertyBag = CreateObject("Scripting.Dictionary")
@@ -1483,6 +1462,7 @@ End Sub
 
 '=========================================================================
 ' 발신자가 발행한 전자명세서를 발행취소합니다.
+' - "발행취소" 상태의 전자명세서를 삭제(Delete API) 함수를 이용하면, 전자명세서 관리를 위해 부여했던 문서번호를 재사용 할 수 있습니다.
 ' - https://docs.popbill.com/statement/vb/api#Cancel
 '=========================================================================
 Private Sub btnCancelIssue_sub_Click()
@@ -1523,6 +1503,7 @@ End Sub
 
 '=========================================================================
 ' 작성된 전자명세서 데이터를 팝빌에 저장합니다.
+' - "임시저장" 상태의 전자명세서는 발행(Issue API) 함수를 호출하여 "발행완료"처리한 경우에만 수신자에게 발행 안내 메일이 발송됩니다.
 ' - https://docs.popbill.com/statement/vb/api#Register
 '=========================================================================
 Private Sub btnRegister_Click()
@@ -1546,7 +1527,7 @@ Private Sub btnRegister_Click()
     '[필수] 전자명세서 종류코드
     Statement.itemCode = selectedItemCode
     
-    '[필수] 문서번호, 최대 24자리, 영문, 숫자 '-', '_'를 조합하여 사업자별로 중복되지 않도록 구성
+    '[필수] 문서번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
     Statement.mgtKey = txtMgtKey.Text
     
     
@@ -1614,6 +1595,8 @@ Private Sub btnRegister_Click()
     Statement.receiverContactName = "수신자 담당자명"
     
     '수신자 메일주소
+    '팝빌 개발환경에서 테스트하는 경우에도 안내 메일이 전송되므로,
+    '실제 거래처의 메일주소가 기재되지 않도록 주의
     Statement.receiverEmail = "test@receiver.com"
     
     '=========================================================================
@@ -1672,8 +1655,6 @@ Private Sub btnRegister_Click()
     
     '=========================================================================
     '전자명세서 추가속성
-    ' - 추가속성에 관한 자세한 사항은 아래의 URL 참조.
-    ' - https://docs.popbill.com/statement/propertyBag?lang=vb
     '=========================================================================
     
     Set Statement.propertyBag = CreateObject("Scripting.Dictionary")
@@ -1694,7 +1675,7 @@ Private Sub btnRegister_Click()
 End Sub
 
 '=========================================================================
-' "임시저장" 상태의 전자명세서를 수정합니다.건의 전자명세서를 [수정]합니다.' 1건의 전자명세서를 수정합니다.
+' "임시저장" 상태의 전자명세서를 수정합니다.
 ' - https://docs.popbill.com/statement/vb/api#Update
 '=========================================================================
 Private Sub btnUpdate_Click()
@@ -1718,7 +1699,7 @@ Private Sub btnUpdate_Click()
     '[필수] 전자명세서 종류코드
     Statement.itemCode = selectedItemCode
     
-    '[필수] 문서번호, 최대 24자리, 영문, 숫자 '-', '_'를 조합하여 사업자별로 중복되지 않도록 구성
+    '[필수] 문서번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
     Statement.mgtKey = txtMgtKey.Text
     
     
@@ -1786,6 +1767,8 @@ Private Sub btnUpdate_Click()
     Statement.receiverContactName = "수신자 담당자명"
     
     '수신자 메일주소
+    '팝빌 개발환경에서 테스트하는 경우에도 안내 메일이 전송되므로,
+    '실제 거래처의 메일주소가 기재되지 않도록 주의
     Statement.receiverEmail = "test@receiver.com"
     
     
@@ -1845,8 +1828,6 @@ Private Sub btnUpdate_Click()
     
     '=========================================================================
     '전자명세서 추가속성
-    ' - 추가속성에 관한 자세한 사항은 아래의 URL 참조.
-    ' - https://docs.popbill.com/statement/propertyBag?lang=vb
     '=========================================================================
     
     Set Statement.propertyBag = CreateObject("Scripting.Dictionary")
@@ -1867,8 +1848,9 @@ End Sub
 
 '=========================================================================
 ' "임시저장" 상태의 전자명세서를 발행하여, "발행완료" 상태로 처리합니다.
-' - 팝빌 사이트 [전자명세서] > [환경설정] > [전자명세서 관리] 메뉴의 발행시 자동승인 옵션 설정을 통해 전자명세서를 "발행완료" 상태가 아닌 "승인대기" 상태로 발행 처리 할 수 있습니다.
-' - 전자명세서 발행 함수 호출시 포인트가 과금되며, 수신자에게 발행 안내 메일이 발송됩니다.
+' - 팝빌 사이트 [전자명세서] > [환경설정] > [전자명세서 관리] 메뉴의 발행시 자동승인 옵션 설정을 통해
+'   전자명세서를 "발행완료" 상태가 아닌 "승인대기" 상태로 발행 처리 할 수 있습니다.
+' - 전자명세서 발행 함수 호출시 수신자에게 발행 안내 메일이 발송됩니다.
 ' - https://docs.popbill.com/statement/vb/api#StmIssue
 '=========================================================================
 Private Sub btnIssue_Click()
@@ -1890,6 +1872,7 @@ End Sub
 
 '=========================================================================
 ' 발신자가 발행한 전자명세서를 발행취소합니다.
+' - "발행취소" 상태의 전자명세서를 삭제(Delete API) 함수를 이용하면, 전자명세서 관리를 위해 부여했던 문서번호를 재사용 할 수 있습니다.
 ' - https://docs.popbill.com/statement/vb/api#Cancel
 '=========================================================================
 Private Sub btnCancelIssue_Click()
@@ -1957,7 +1940,7 @@ End Sub
 
 '=========================================================================
 ' 전자명세서에 첨부된 파일목록을 확인합니다.
-' - 응답항목 중 파일아이디(AttachedFile) 항목은 파일삭제(DeleteFile API) 호출시 이용할 수 있습니다.
+' - 응답항목 중 파일아이디(AttachedFile) 항목은 첨부파일 삭제(DeleteFile API) 함수 호출 시 이용할 수 있습니다.
 ' - https://docs.popbill.com/statement/vb/api#GetFiles
 '=========================================================================
 Private Sub btnGetFiles_Click()
@@ -1972,7 +1955,7 @@ Private Sub btnGetFiles_Click()
         Exit Sub
     End If
     
-    tmp = "serialNum(일련번호) | attachedfile(파일아이디) | displayName(첨부파일명) |  RegDT(첨부일시)" + vbCrLf
+    tmp = "serialNum (일련번호) | attachedfile (파일아이디) | displayName (첨부파일명) | RegDT (첨부일시)" + vbCrLf
     
     For Each file In resultList
         tmp = tmp + CStr(file.serialNum) + " | " + file.AttachedFile + " | " + file.DisplayName + " | " + file.regDT + vbCrLf
@@ -1984,7 +1967,7 @@ End Sub
 
 '=========================================================================
 ' "임시저장" 상태의 전자명세서에 첨부된 1개의 파일을 삭제합니다.
-' - 파일을 식별하는 파일아이디는 첨부파일 목록(GetFiles API) 의 응답항목 중 파일아이디(AttachedFile) 값을 통해 확인할 수 있습니다.
+' - 파일 식별을 위해 첨부 시 부여되는 'FileID'는 첨부파일 목록 확인(GetFiles API) 함수를 호출하여 확인합니다.
 ' - https://docs.popbill.com/statement/vb/api#DeleteFile
 '=========================================================================
 Private Sub btnDeleteFile_Click()
@@ -2042,7 +2025,7 @@ Private Sub btnGetInfo_Click()
 End Sub
 
 '=========================================================================
-' 다수건의 전자명세서 상태 및 요약정보 확인합니다. (1회 호출 시 최대 1,000건 확인 가능)
+' 다수건의 전자명세서 상태 및 요약 정보를 확인합니다. (1회 호출 시 최대 1,000건 확인 가능)
 ' - https://docs.popbill.com/statement/vb/api#GetInfos
 '=========================================================================
 Private Sub btnGetInfos_Click()
@@ -2064,12 +2047,12 @@ Private Sub btnGetInfos_Click()
         Exit Sub
     End If
         
-    tmp = "itemCode(명세서 코드) | itemKey(팝빌번호) | invoiceNum(팝빌 승인번호) | mgtKey(문서번호) | taxType(세금형태) | " + vbCrLf
-    tmp = tmp + "writeDate(작성일자) | regDT(임시저장일시) | senderCorpName(발신자 상호) | senderCorpNum(발신자 사업자번호) | " + vbCrLf
-    tmp = tmp + "senderPrintYN(발신자 인쇄여부) | receiverCorpName(수신자 상호) | receiverCorpNum(수신자 사업자번호) | " + vbCrLf
-    tmp = tmp + "receiverPrintYN(수신자 인쇄여부) | supplyCostTotal(공급가액 합계) | taxTotal(세액 합계) | purposeType(영수/청구) | " + vbCrLf
-    tmp = tmp + "issueDT(발행일시) | stateCode(상태코드) | stateDT(상태 변경일시) | stateMemo(상태메모) | " + vbCrLf
-    tmp = tmp + "openYN(개봉 여부) | openDT(개봉 일시)" + vbCrLf + vbCrLf
+    tmp = "itemCode (문서종류코드) | itemKey (팝빌번호) | invoiceNum (팝빌 승인번호) | mgtKey (문서번호) | taxType (세금형태) | " + vbCrLf
+    tmp = tmp + "writeDate (작성일자) | regDT (임시저장일시) | senderCorpName (발신자 상호) | senderCorpNum (발신자 사업자번호) | " + vbCrLf
+    tmp = tmp + "senderPrintYN (발신자 인쇄여부) | receiverCorpName (수신자 상호) | receiverCorpNum (수신자 사업자번호) | " + vbCrLf
+    tmp = tmp + "receiverPrintYN (수신자 인쇄여부) | supplyCostTotal (공급가액 합계) | taxTotal (세액 합계) | purposeType (영수/청구) | " + vbCrLf
+    tmp = tmp + "issueDT (발행일시) | stateCode (상태코드) | stateDT (상태 변경일시) | stateMemo (상태메모) | " + vbCrLf
+    tmp = tmp + "openYN (개봉 여부) | openDT (개봉 일시)" + vbCrLf + vbCrLf
         
     For Each info In resultList
         tmp = tmp + CStr(info.itemCode) + " | " + info.itemKey + " | " + info.invoiceNum + " | " + info.mgtKey + " | " + info.taxType + " | " + info.writeDate + " | "
@@ -2089,7 +2072,7 @@ Private Sub btnGetDetailInfo_Click()
     Dim docDetailInfo As PBStatement
     Dim tmp As String
     Dim key
-    Dim detail As PBDocDetail
+    Dim Detail As PBDocDetail
     
     Set docDetailInfo = statementService.GetDetailInfo(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
      
@@ -2098,7 +2081,7 @@ Private Sub btnGetDetailInfo_Click()
         Exit Sub
     End If
     
-    tmp = tmp + "itemCode (문서종류 코드) : " + CStr(docDetailInfo.itemCode) + vbCrLf
+    tmp = tmp + "itemCode (명세서 코드) : " + CStr(docDetailInfo.itemCode) + vbCrLf
     tmp = tmp + "mgtKey (문서번호) : " + docDetailInfo.mgtKey + vbCrLf
     tmp = tmp + "invoiceNum (팝빌 승인번호) : " + docDetailInfo.invoiceNum + vbCrLf
     tmp = tmp + "formCode (맞춤양식 코드) : " + docDetailInfo.formCode + vbCrLf
@@ -2142,15 +2125,15 @@ Private Sub btnGetDetailInfo_Click()
     tmp = tmp + "receiverFAX (수신자 팩스) : " + docDetailInfo.receiverFAX + vbCrLf
         
     tmp = tmp + "detailList (상세항목)" + vbCrLf
-    tmp = tmp + "serialNum(일련번호) | purchaseDT(거래일자) | itemName(품목명) | spec(규격) | qty(수량) |"
-    tmp = tmp + "unitCost(단가) | supplyCost(공급가액) | tax(세액) | remark(비고) | spare1(여분1) "
-    tmp = tmp + "spare2(여분2) | spare3(여분3) | spare4(여분4) | spare5(여분5) "
-    For Each detail In docDetailInfo.detailList
-        tmp = tmp + vbTab + CStr(detail.serialNum) + " : " + detail.purchaseDT + " | " + detail.itemName + " | "
-        tmp = tmp + detail.spec + " | " + detail.qty + " | " + " | " + detail.unitCost + " | "
-        tmp = tmp + detail.supplyCost + " | " + detail.tax + " | " + " | " + detail.remark + " | "
-        tmp = tmp + detail.spare1 + " | " + detail.spare2 + " | " + " | " + detail.spare3 + " | "
-        tmp = tmp + detail.spare4 + " | " + detail.spare5 + vbCrLf
+    tmp = tmp + "serialNum (일련번호) | purchaseDT (거래일자) | itemName (품목명) | spec (규격) | qty (수량) |"
+    tmp = tmp + "unitCost (단가) | supplyCost (공급가액) | tax (세액) | remark (비고) | spare1 (여분1) "
+    tmp = tmp + "spare2 (여분2) | spare3 (여분3) | spare4 (여분4) | spare5 (여분5) "
+    For Each Detail In docDetailInfo.detailList
+        tmp = tmp + vbTab + CStr(Detail.serialNum) + " : " + Detail.purchaseDT + " | " + Detail.itemName + " | "
+        tmp = tmp + Detail.spec + " | " + Detail.qty + " | " + " | " + Detail.unitCost + " | "
+        tmp = tmp + Detail.supplyCost + " | " + Detail.tax + " | " + " | " + Detail.remark + " | "
+        tmp = tmp + Detail.spare1 + " | " + Detail.spare2 + " | " + " | " + Detail.spare3 + " | "
+        tmp = tmp + Detail.spare4 + " | " + Detail.spare5 + vbCrLf
     Next
     
     tmp = tmp + "Properties (추가속성)" + vbCrLf
@@ -2162,7 +2145,7 @@ Private Sub btnGetDetailInfo_Click()
 End Sub
 
 '=========================================================================
-' 검색조건에 해당하는 전자명세서를 조회합니다. (조회기간 단위 : 최대 6개월)
+' 검색조건을 사용하여 전자명세서 목록을 조회합니다. (조회기간 단위 : 최대 6개월)
 ' - https://docs.popbill.com/statement/vb/api#Search
 '=========================================================================
 
@@ -2192,7 +2175,7 @@ Private Sub btnSearch_Click()
     state.Add "2**"
     state.Add "3**"
     
-    '명세서 코드 배열, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
+    '문서종류코드 배열, 121-거래명세서, 122-청구서, 123-견적서, 124-발주서, 125-입금표, 126-영수증
     itemCode.Add "121"
     itemCode.Add "122"
     itemCode.Add "123"
@@ -2281,6 +2264,8 @@ Private Sub btnSendEmail_Click()
     Dim receiverEmail As String
   
     '수신자 메일주소
+    '팝빌 개발환경에서 테스트하는 경우에도 안내 메일이 전송되므로,
+    '실제 거래처의 메일주소가 기재되지 않도록 주의
     receiverEmail = "test@test.com"
     
     Set Response = statementService.SendEmail(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, receiverEmail)
@@ -2354,8 +2339,8 @@ End Sub
 ' 전자명세서를 팩스로 전송하는 함수로, 팝빌에 데이터를 저장하는 과정이 없습니다.
 ' - 팝빌 사이트 [문자·팩스] > [팩스] > [전송내역] 메뉴에서 전송결과를 확인 할 수 있습니다.
 ' - 함수 호출시 포인트가 과금됩니다.
-' - 팩스 발행 요청시 작성한 문서번호는 팩스전송 파일명으로 사용됩니다.
-' - 팩스 전송결과를 확인하기 위해서는 선팩스 전송 요청 시 반환받은 접수번호를 이용하여 팩스 API의 전송결과 확인 (GetFaxDetail) API를 이용하면 됩니다.
+' - 선팩스 전송 요청 시 작성한 문서번호는 팩스로 전송되는 파일명에 사용됩니다.
+' - 팩스 전송결과를 확인하기 위해서는 선팩스 전송 요청 시 반환받은 접수번호를 이용하여 팩스 API의 전송내역 확인 (GetMessages API) 함수를 이용하면 됩니다.
 ' - https://docs.popbill.com/statement/vb/api#FAXSend
 '=========================================================================
 Private Sub btnFAXSend_Click()
@@ -2382,10 +2367,10 @@ Private Sub btnFAXSend_Click()
     '맞춤양식코드, 공백처리시 기본양식으로 작성
     Statement.formCode = txtFormCode.Text
     
-    '[필수] 전자명세서 종류코드
+    '[필수] 전자명세서 명세서 코드
     Statement.itemCode = selectedItemCode
     
-    '[필수] 문서번호, 최대 24자리, 영문, 숫자 '-', '_'를 조합하여 사업자별로 중복되지 않도록 구성
+    '[필수] 문서번호, 숫자, 영문, '-', '_' 조합 (최대24자리)으로 사업자별로 중복되지 않도록 구성
     Statement.mgtKey = txtMgtKey.Text
     
     
@@ -2453,6 +2438,8 @@ Private Sub btnFAXSend_Click()
     Statement.receiverContactName = "수신자 담당자명"
     
     '수신자 메일주소
+    '팝빌 개발환경에서 테스트하는 경우에도 안내 메일이 전송되므로,
+    '실제 거래처의 메일주소가 기재되지 않도록 주의
     Statement.receiverEmail = "test@receiver.com"
     
     
@@ -2486,7 +2473,8 @@ Private Sub btnFAXSend_Click()
     '발행시 알림문자 발송여부
     Statement.smssendYN = False
   
-    '상세항목 추가.
+    '상세항목 추가. (배열 길이 제한 없음)
+    '일련번호(serialNum)은 1부터 순차적으로 기재하시기 바랍니다
     Set Statement.detailList = New Collection
     
     For i = 1 To 5
@@ -2511,8 +2499,6 @@ Private Sub btnFAXSend_Click()
     
     '=========================================================================
     '전자명세서 추가속성
-    ' - 추가속성에 관한 자세한 사항은 아래의 URL 참조.
-    ' - https://docs.popbill.com/statement/propertyBag?lang=vb
     '=========================================================================
     
     Set Statement.propertyBag = CreateObject("Scripting.Dictionary")
@@ -2634,15 +2620,15 @@ Private Sub btnListemailconfig_Click()
 End Sub
 
 '=========================================================================
-' 전자명세서 관련 메일 항목에 대한 발송설정을 수정합니다.
+' 자명세서 관련 메일 항목에 대한 발송설정을 수정합니다.
 ' - https://docs.popbill.com/statement/vb/api#UpdateEmailConfig
 '
 ' 메일전송유형
-' SMT_ISSUE : 공급받는자에게 전자명세서가 발행 되었음을 알려주는 메일입니다.
-' SMT_ACCEPT : 공급자에게 전자명세서가 승인 되었음을 알려주는 메일입니다.
-' SMT_DENY : 공급자에게 전자명세서가 거부 되었음을 알려주는 메일입니다.
-' SMT_CANCEL : 공급받는자에게 전자명세서가 취소 되었음을 알려주는 메일입니다.
-' SMT_CANCEL_ISSUE : 공급받는자에게 전자명세서가 발행취소 되었음을 알려주는 메일입니다.
+' SMT_ISSUE : 수신자에게 전자명세서가 발행 되었음을 알려주는 메일입니다.
+' SMT_ACCEPT : 발신자에게 전자명세서가 승인 되었음을 알려주는 메일입니다.
+' SMT_DENY : 발신자에게 전자명세서가 거부 되었음을 알려주는 메일입니다.
+' SMT_CANCEL : 수신자에게 전자명세서가 취소 되었음을 알려주는 메일입니다.
+' SMT_CANCEL_ISSUE : 수신자에게 전자명세서가 발행취소 되었음을 알려주는 메일입니다.
 '=========================================================================
 Private Sub btnUpdateemailconfig_Click()
     Dim Response As PBResponse
@@ -2671,55 +2657,57 @@ End Sub
 ' - https://docs.popbill.com/statement/vb/api#GetPopUpURL
 '=========================================================================
 Private Sub btnGetPopUpURL_Click()
-    Dim url As String
+    Dim URL As String
   
-    url = statementService.GetPopUpURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    URL = statementService.GetPopUpURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
-' 전자명세서 1건을 인쇄하기 위한 페이지의 팝업 URL을 반환하며, 페이지내에서 인쇄 설정값을 "공급자" / "공급받는자" / "공급자+공급받는자"용 중 하나로 지정할 수 있습니다.
+' 전자명세서 1건을 인쇄하기 위한 페이지의 팝업 URL을 반환하며, 페이지내에서 인쇄 설정값을 "공급자" / "공급받는자" / "공급자+공급받는자"용 중 하나로 지정할 수 있습니다
 ' - 반환되는 URL은 보안 정책상 30초 동안 유효하며, 시간을 초과한 후에는 해당 URL을 통한 페이지 접근이 불가합니다.
+' - 전자명세서의 공급자는 "발신자", 공급받는자는 "수신자"를 나타내는 용어입니다.
 ' - https://docs.popbill.com/statement/vb/api#GetPrintURL
 '=========================================================================
 Private Sub btnGetPrintURL_Click()
-    Dim url As String
+    Dim URL As String
     
-    url = statementService.GetPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    URL = statementService.GetPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
 ' "공급받는자" 용 전자명세서 1건을 인쇄하기 위한 페이지의 팝업 URL을 반환합니다.
 ' - 반환되는 URL은 보안 정책상 30초 동안 유효하며, 시간을 초과한 후에는 해당 URL을 통한 페이지 접근이 불가합니다.
+' - 전자명세서의 공급받는자는 "수신자"를 나타내는 용어입니다.
 ' - https://docs.popbill.com/statement/vb/api#GetEPrintURL
 '=========================================================================
 Private Sub btnGetEPrintUrl_Click()
-    Dim url As String
+    Dim URL As String
     
-    url = statementService.GetEPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    URL = statementService.GetEPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
@@ -2728,7 +2716,7 @@ End Sub
 ' - https://docs.popbill.com/statement/vb/api#GetMassPrintURL
 '=========================================================================
 Private Sub btnGetMassPrintURL_Click()
-    Dim url As String
+    Dim URL As String
     Dim KeyList As New Collection
     
     '전자명세서 문서번호 배열 (최대 100건)
@@ -2737,78 +2725,78 @@ Private Sub btnGetMassPrintURL_Click()
     KeyList.Add "20220101-03"
     KeyList.Add "20220101-04"
     
-    url = statementService.GetMassPrintURL(txtCorpNum.Text, selectedItemCode, KeyList)
+    URL = statementService.GetMassPrintURL(txtCorpNum.Text, selectedItemCode, KeyList)
      
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
-' 안내메일과 관련된 전자명세서를 확인 할 수 있는 상세 페이지의 팝업 URL을 반환하며, 해당 URL은 메일 하단의 파란색 버튼의 링크와 같습니다.
+' 전자명세서 안내메일의 상세보기 링크 URL을 반환합니다.
 ' - 함수 호출로 반환 받은 URL에는 유효시간이 없습니다.
 ' - https://docs.popbill.com/statement/vb/api#GetMailURL
 '=========================================================================
 Private Sub btnGetMailURL_Click()
-    Dim url As String
+    Dim URL As String
     
-    url = statementService.GetMailURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    URL = statementService.GetMailURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
-' 로그인 상태로 팝빌 사이트의 전자명세서 매출문서함 메뉴에 접근할 수 있는 페이지의 팝업 URL을 반환합니다.
+' 로그인 상태로 팝빌 사이트의 전자명세서 매출 문서함 메뉴에 접근할 수 있는 페이지의 팝업 URL을 반환합니다.
 ' - 반환되는 URL은 보안 정책상 30초 동안 유효하며, 시간을 초과한 후에는 해당 URL을 통한 페이지 접근이 불가합니다.
 ' - https://docs.popbill.com/statement/vb/api#GetURL
 '=========================================================================
 Private Sub btnGetURL_PBOX_Click()
-    Dim url As String
+    Dim URL As String
     
-    url = statementService.GetURL(txtCorpNum.Text, txtUserID.Text, "SBOX")
+    URL = statementService.GetURL(txtCorpNum.Text, txtUserID.Text, "SBOX")
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 '=========================================================================
-' 로그인 상태로 팝빌 사이트의 전자명세서 임시문서함 메뉴에 접근할 수 있는 페이지의 팝업 URL을 반환합니다.
+' ' 로그인 상태로 팝빌 사이트의 전자명세서 임시 문서함 메뉴에 접근할 수 있는 페이지의 팝업 URL을 반환합니다.
 ' - 반환되는 URL은 보안 정책상 30초 동안 유효하며, 시간을 초과한 후에는 해당 URL을 통한 페이지 접근이 불가합니다.
 ' - https://docs.popbill.com/statement/vb/api#GetURL
 '=========================================================================
 Private Sub btnGetURL_TBOX_Click()
-    Dim url As String
+    Dim URL As String
     
-    url = statementService.GetURL(txtCorpNum.Text, txtUserID.Text, "TBOX")
+    URL = statementService.GetURL(txtCorpNum.Text, txtUserID.Text, "TBOX")
     
-    If url = "" Then
+    If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
         Exit Sub
     End If
     
-    MsgBox "URL : " + vbCrLf + url
-    txtURL.Text = url
+    MsgBox "URL : " + vbCrLf + URL
+    txtURL.Text = URL
 End Sub
 
 Private Sub Form_Load()
 
-    '전자명세서 객체 초기화
-    statementService.Initialize linkID, SecretKey
+    '모듈 초기화
+    statementService.Initialize LinkID, SecretKey
     
     '연동환경설정값, True-개발용 False-상업용
     statementService.IsTest = True
@@ -2818,7 +2806,8 @@ Private Sub Form_Load()
     
     '로컬시스템 시간 사용여부 True-사용, False-미사용, 기본값(False)
     statementService.UseLocalTimeYN = False
-    
-    
+
 End Sub
+
+
 

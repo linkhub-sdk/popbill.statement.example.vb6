@@ -222,7 +222,7 @@ Begin VB.Form frmExample
             Height          =   390
             Left            =   210
             TabIndex        =   40
-            Top             =   270
+            Top             =   240
             Width           =   1500
          End
       End
@@ -752,7 +752,7 @@ Attribute VB_Exposed = False
 '
 ' 팝빌 전자명세서 API VB SDK Example
 '
-' - 업데이트 일자 : 2022-04-06
+' - 업데이트 일자 : 2022-07-26
 ' - 연동 기술지원 연락처 : 1600-9854
 ' - 연동 기술지원 이메일 : code@linkhubcorp.com
 ' - VB SDK 적용방법 안내 : https://docs.popbill.com/statement/tutorial/vb
@@ -766,7 +766,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 '링크아이디
-Private Const LinkID = "TESTER"
+Private Const linkID = "TESTER"
 
 '비밀키
 Private Const SecretKey = "SwWxqU+0TErBXy/9TVjIPEnI0VTUMMSQZtJf3Ed8q3I="
@@ -793,7 +793,7 @@ End Function
 Private Sub btnCheckIsMember_Click()
     Dim Response As PBResponse
     
-    Set Response = statementService.CheckIsMember(txtCorpNum.Text, LinkID)
+    Set Response = statementService.CheckIsMember(txtCorpNum.Text, linkID)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -832,7 +832,7 @@ Private Sub btnGetContactInfo_Click()
     '확인할 담당자 아이디
     ContactID = "testkorea"
     
-    Set info = statementService.GetContactInfo(txtCorpNum.Text, ContactID, txtUserID.Text)
+    Set info = statementService.GetContactInfo(txtCorpNum.Text, ContactID)
     
     If info Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -857,7 +857,7 @@ End Sub
 Private Sub btnGetViewURL_Click()
     Dim URL As String
     
-    URL = statementService.GetViewURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    URL = statementService.GetViewURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
     
     If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -883,7 +883,7 @@ Private Sub btnJoinMember_Click()
     joinData.Password = "asdf$%^123"
     
     '파트너링크 아이디
-    joinData.LinkID = LinkID
+    joinData.linkID = linkID
     
     '사업자번호, '-'제외, 10자리
     joinData.CorpNum = "1234567890"
@@ -2072,7 +2072,7 @@ Private Sub btnGetDetailInfo_Click()
     Dim docDetailInfo As PBStatement
     Dim tmp As String
     Dim key
-    Dim Detail As PBDocDetail
+    Dim detail As PBDocDetail
     
     Set docDetailInfo = statementService.GetDetailInfo(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
      
@@ -2128,12 +2128,12 @@ Private Sub btnGetDetailInfo_Click()
     tmp = tmp + "serialNum (일련번호) | purchaseDT (거래일자) | itemName (품목명) | spec (규격) | qty (수량) |"
     tmp = tmp + "unitCost (단가) | supplyCost (공급가액) | tax (세액) | remark (비고) | spare1 (여분1) "
     tmp = tmp + "spare2 (여분2) | spare3 (여분3) | spare4 (여분4) | spare5 (여분5) "
-    For Each Detail In docDetailInfo.detailList
-        tmp = tmp + vbTab + CStr(Detail.serialNum) + " : " + Detail.purchaseDT + " | " + Detail.itemName + " | "
-        tmp = tmp + Detail.spec + " | " + Detail.qty + " | " + " | " + Detail.unitCost + " | "
-        tmp = tmp + Detail.supplyCost + " | " + Detail.tax + " | " + " | " + Detail.remark + " | "
-        tmp = tmp + Detail.spare1 + " | " + Detail.spare2 + " | " + " | " + Detail.spare3 + " | "
-        tmp = tmp + Detail.spare4 + " | " + Detail.spare5 + vbCrLf
+    For Each detail In docDetailInfo.detailList
+        tmp = tmp + vbTab + CStr(detail.serialNum) + " : " + detail.purchaseDT + " | " + detail.itemName + " | "
+        tmp = tmp + detail.spec + " | " + detail.qty + " | " + " | " + detail.unitCost + " | "
+        tmp = tmp + detail.supplyCost + " | " + detail.tax + " | " + " | " + detail.remark + " | "
+        tmp = tmp + detail.spare1 + " | " + detail.spare2 + " | " + " | " + detail.spare3 + " | "
+        tmp = tmp + detail.spare4 + " | " + detail.spare5 + vbCrLf
     Next
     
     tmp = tmp + "Properties (추가속성)" + vbCrLf
@@ -2575,7 +2575,7 @@ Private Sub btnListemailconfig_Click()
     Dim resultList As Collection
     Dim i As Integer
     
-    Set resultList = statementService.ListEmailConfig(txtCorpNum.Text, txtUserID.Text)
+    Set resultList = statementService.ListEmailConfig(txtCorpNum.Text)
     
     If resultList Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2641,7 +2641,7 @@ Private Sub btnUpdateemailconfig_Click()
     '전송 여부 (True = 전송, False = 미전송)
     sendYN = True
     
-    Set Response = statementService.UpdateEmailConfig(txtCorpNum.Text, emailType, sendYN, txtUserID.Text)
+    Set Response = statementService.UpdateEmailConfig(txtCorpNum.Text, emailType, sendYN)
     
     If Response Is Nothing Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2659,7 +2659,7 @@ End Sub
 Private Sub btnGetPopUpURL_Click()
     Dim URL As String
   
-    URL = statementService.GetPopUpURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    URL = statementService.GetPopUpURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
     
     If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2679,7 +2679,7 @@ End Sub
 Private Sub btnGetPrintURL_Click()
     Dim URL As String
     
-    URL = statementService.GetPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    URL = statementService.GetPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
     
     If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2699,7 +2699,7 @@ End Sub
 Private Sub btnGetEPrintUrl_Click()
     Dim URL As String
     
-    URL = statementService.GetEPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    URL = statementService.GetEPrintURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
     
     If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2725,7 +2725,7 @@ Private Sub btnGetMassPrintURL_Click()
     KeyList.Add "20220101-03"
     KeyList.Add "20220101-04"
     
-    URL = statementService.GetMassPrintURL(txtCorpNum.Text, selectedItemCode, KeyList)
+    URL = statementService.GetMassPrintURL(txtCorpNum.Text, selectedItemCode, KeyList, txtUserID.Text)
      
     If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2744,7 +2744,7 @@ End Sub
 Private Sub btnGetMailURL_Click()
     Dim URL As String
     
-    URL = statementService.GetMailURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text)
+    URL = statementService.GetMailURL(txtCorpNum.Text, selectedItemCode, txtMgtKey.Text, txtUserID.Text)
     
     If URL = "" Then
         MsgBox ("응답코드 : " + CStr(statementService.LastErrCode) + vbCrLf + "응답메시지 : " + statementService.LastErrMessage)
@@ -2796,7 +2796,7 @@ End Sub
 Private Sub Form_Load()
 
     '모듈 초기화
-    statementService.Initialize LinkID, SecretKey
+    statementService.Initialize linkID, SecretKey
     
     '연동환경설정값, True-개발용 False-상업용
     statementService.IsTest = True
